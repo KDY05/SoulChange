@@ -1,0 +1,4 @@
+name: SoulChange
+version: '1.0-SNAPSHOT'
+main: com.github.kdy05.soulChange.SoulChange
+api-version: '1.21'
