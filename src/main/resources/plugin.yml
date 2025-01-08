@@ -1,4 +1,12 @@
 name: SoulChange
 version: '1.0-SNAPSHOT'
 main: com.github.kdy05.soulChange.SoulChange
+depend: [DisguiseAPI]
 api-version: '1.21'
+commands:
+  change:
+    description: change command
+  heal:
+    description: heal command
+  skin:
+    description: skin command

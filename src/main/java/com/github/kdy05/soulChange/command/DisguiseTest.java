@@ -1,0 +1,46 @@
+package com.github.kdy05.soulChange.command;
+
+import com.github.kdy05.soulChange.SoulChange;
+import net.pinger.disguise.DisguiseAPI;
+import net.pinger.disguise.exception.UserNotFoundException;
+import net.pinger.disguise.skin.Skin;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.Objects;
+
+public class DisguiseTest implements CommandExecutor {
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        Player player = (Player) commandSender;
+        if (strings.length < 1) {
+            player.sendMessage( ChatColor.YELLOW + "Your name is "+player.getName()+".");
+            return false;
+        }
+        try{
+            if (strings.length == 1) {
+                if (Objects.equals(strings[0], "reset")){
+                    SoulChange.getDisguiseProvider().resetPlayer(player);
+                    return false;
+                }
+                Skin skin = DisguiseAPI.getSkinManager().getFromMojang(strings[0]);
+                SoulChange.getDisguiseProvider().updatePlayer(player, skin, strings[0]);
+            } else if (strings.length == 2) {
+                Player target = Bukkit.matchPlayer(strings[0]).getFirst();
+                if (Objects.equals(strings[1], "reset")){
+                    SoulChange.getDisguiseProvider().resetPlayer(target);
+                    return false;
+                }
+                net.pinger.disguise.skin.Skin skin = DisguiseAPI.getSkinManager().getFromMojang(strings[1]);
+                SoulChange.getDisguiseProvider().updatePlayer(target, skin, strings[1]);
+            }
+        } catch (UserNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+}

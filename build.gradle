@@ -7,6 +7,7 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         name = "spigotmc-repo"
         url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
@@ -19,6 +20,8 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
+    compileOnly 'net.pinger.disguise:API:1.0-SNAPSHOT'
+    compileOnly 'net.pinger.disguise:API:1.4.0'
 }
 
 def targetJavaVersion = 21
@@ -46,4 +49,9 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+tasks.jar {
+    archiveFileName = 'Soul_Change.jar'
+    destinationDirectory = file("C:\\Users\\kwond\\Workspace\\minecraft\\Servers\\Paper210\\plugins")
 }
