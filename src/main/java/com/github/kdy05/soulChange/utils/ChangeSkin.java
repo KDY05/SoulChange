@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ChangeSkin {
-    // 스킨 캐싱을 위한 맵
-    private final Map<String, Skin> skinCache = new ConcurrentHashMap<>();
+    // 스킨 캐싱을 위한 맵 (static 빼먹어서 ㅈㄴ 고생함)
+    private static final Map<String, Skin> skinCache = new ConcurrentHashMap<>();
 
     public void changeSkin(Player player, String name){
         Skin skin = getSkinFromCache(name);

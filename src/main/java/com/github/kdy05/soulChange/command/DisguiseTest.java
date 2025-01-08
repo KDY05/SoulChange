@@ -1,9 +1,8 @@
 package com.github.kdy05.soulChange.command;
 
 import com.github.kdy05.soulChange.SoulChange;
-import net.pinger.disguise.DisguiseAPI;
+import com.github.kdy05.soulChange.utils.ChangeSkin;
 import net.pinger.disguise.exception.UserNotFoundException;
-import net.pinger.disguise.skin.Skin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -27,16 +26,16 @@ public class DisguiseTest implements CommandExecutor {
                     SoulChange.getDisguiseProvider().resetPlayer(player);
                     return false;
                 }
-                Skin skin = DisguiseAPI.getSkinManager().getFromMojang(strings[0]);
-                SoulChange.getDisguiseProvider().updatePlayer(player, skin, strings[0]);
+                ChangeSkin changeSkin = new ChangeSkin();
+                changeSkin.changeSkin(player, strings[0]);
             } else if (strings.length == 2) {
                 Player target = Bukkit.matchPlayer(strings[0]).getFirst();
                 if (Objects.equals(strings[1], "reset")){
                     SoulChange.getDisguiseProvider().resetPlayer(target);
                     return false;
                 }
-                net.pinger.disguise.skin.Skin skin = DisguiseAPI.getSkinManager().getFromMojang(strings[1]);
-                SoulChange.getDisguiseProvider().updatePlayer(target, skin, strings[1]);
+                ChangeSkin changeSkin = new ChangeSkin();
+                changeSkin.changeSkin(target, strings[1]);
             }
         } catch (UserNotFoundException e) {
             throw new RuntimeException(e);
