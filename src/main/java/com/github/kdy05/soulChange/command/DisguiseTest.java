@@ -2,7 +2,6 @@ package com.github.kdy05.soulChange.command;
 
 import com.github.kdy05.soulChange.SoulChange;
 import com.github.kdy05.soulChange.utils.ChangeSkin;
-import net.pinger.disguise.exception.UserNotFoundException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,28 +16,24 @@ public class DisguiseTest implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = (Player) commandSender;
         if (strings.length < 1) {
-            player.sendMessage( ChatColor.YELLOW + "Your name is "+player.getName()+".");
+            player.sendMessage( ChatColor.YELLOW + "Your name is " + player.getName() + "(" + player.getUniqueId() + ")" + ".");
             return false;
         }
-        try{
-            if (strings.length == 1) {
-                if (Objects.equals(strings[0], "reset")){
-                    SoulChange.getDisguiseProvider().resetPlayer(player);
-                    return false;
-                }
-                ChangeSkin changeSkin = new ChangeSkin();
-                changeSkin.changeSkin(player, strings[0]);
-            } else if (strings.length == 2) {
-                Player target = Bukkit.matchPlayer(strings[0]).getFirst();
-                if (Objects.equals(strings[1], "reset")){
-                    SoulChange.getDisguiseProvider().resetPlayer(target);
-                    return false;
-                }
-                ChangeSkin changeSkin = new ChangeSkin();
-                changeSkin.changeSkin(target, strings[1]);
+        if (strings.length == 1) {
+            if (Objects.equals(strings[0], "reset")){
+                SoulChange.getDisguiseProvider().resetPlayer(player);
+                return false;
             }
-        } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
+            ChangeSkin changeSkin = new ChangeSkin();
+            changeSkin.changeSkin(player, strings[0]);
+        } else if (strings.length == 2) {
+            Player target = Bukkit.matchPlayer(strings[0]).getFirst();
+            if (Objects.equals(strings[1], "reset")){
+                SoulChange.getDisguiseProvider().resetPlayer(target);
+                return false;
+            }
+            ChangeSkin changeSkin = new ChangeSkin();
+            changeSkin.changeSkin(target, strings[1]);
         }
         return false;
     }

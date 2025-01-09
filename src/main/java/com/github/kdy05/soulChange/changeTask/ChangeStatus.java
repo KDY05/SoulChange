@@ -3,6 +3,8 @@ package com.github.kdy05.soulChange.changeTask;
 import com.github.kdy05.soulChange.SoulChange;
 import com.github.kdy05.soulChange.utils.ChangeSkin;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -22,12 +24,14 @@ public class ChangeStatus {
 
         // 어그로 몹
 
-        // 1초 무적
         for (Player player : onlinePlayers){
+            // 1초 무적
             player.setInvulnerable(true);
-            Bukkit.getScheduler().runTaskLater(SoulChange.getServerInstance(), () -> {
-                player.setInvulnerable(false);
-            }, 20L);
+            Bukkit.getScheduler().runTaskLater(SoulChange.getServerInstance(),
+                    () -> player.setInvulnerable(false), 20L);
+            // 타이틀 메시지
+            Bukkit.getScheduler().runTaskLater(SoulChange.getServerInstance(),
+                    () -> player.sendTitle("", ChatColor.GRAY + "모든 플레이어들의 영혼이 뒤바뀌었습니다!", 5, 50, 5), 5L);
         }
 
         double[] playerHealths = new double[size]; // 플레이어 체력 저장
@@ -39,6 +43,7 @@ public class ChangeStatus {
         Location[] playerLocation = new Location[size]; // 플레이어 위치 저장
         Location[] playerRespawnLocation = new Location[size]; // 플레이어 리스폰 위치 저장
         List<PotionEffect>[] playerPotion = new List[size]; // 플레이어 포션 이펙트 저장
+        GameMode[] playerGameMode = new GameMode[size]; // 플레이어 게임모드 저장
         String[] playerName = new String[size]; // 플레이어 이름 저장
 
 
@@ -57,6 +62,7 @@ public class ChangeStatus {
             for(PotionEffect potionEffect : playerPotion[i]){
                 onlinePlayers[i].removePotionEffect(potionEffect.getType());
             }
+            playerGameMode[i] = onlinePlayers[i].getGameMode();
             playerName[i] = onlinePlayers[i].getName();
         }
 
@@ -76,6 +82,7 @@ public class ChangeStatus {
             Location newLocation = playerLocation[target];
             Location newRespawnLocation = playerRespawnLocation[target];
             List<PotionEffect> newPotion = playerPotion[target];
+            GameMode newGameMode = playerGameMode[target];
             String newName = playerName[target];
 
             // 싱태 적용
@@ -91,6 +98,7 @@ public class ChangeStatus {
             player.teleport(newLocation);
             player.setRespawnLocation(newRespawnLocation, true);
             player.addPotionEffects(newPotion);
+            player.setGameMode(newGameMode);
             ChangeSkin changeSkin = new ChangeSkin();
             changeSkin.changeSkin(player, newName);
         }

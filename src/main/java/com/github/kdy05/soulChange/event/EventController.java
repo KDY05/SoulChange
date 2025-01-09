@@ -1,6 +1,7 @@
 package com.github.kdy05.soulChange.event;
 
 import com.github.kdy05.soulChange.SoulChange;
+import org.bukkit.Bukkit;
 
 public class EventController {
     private final SoulChange serverInstance;
@@ -11,6 +12,6 @@ public class EventController {
     }
 
     private void registerEvents(){
-        //serverInstance.getServer().getPluginManager().registerEvents(new AfterRandTime(), serverInstance);
+        Bukkit.getServer().getPluginManager().registerEvents(new OnQuitAndJoin(), serverInstance);
     }
 }

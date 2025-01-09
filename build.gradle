@@ -7,7 +7,7 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    mavenLocal()
+    mavenLocal() // **NOTE: Local install 필요 (DisguiseAPI)
     maven {
         name = "spigotmc-repo"
         url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
@@ -54,4 +54,11 @@ processResources {
 tasks.jar {
     archiveFileName = 'Soul_Change.jar'
     destinationDirectory = file("C:\\Users\\kwond\\Workspace\\minecraft\\Servers\\Paper210\\plugins")
+    doLast {
+        // 기본 위치 외에 추가로 복사할 경로들
+        copy {
+            from archiveFile
+            into file('C:\\Users\\kwond\\Workspace\\minecraft\\Servers\\Paper210-2\\plugins')
+        }
+    }
 }
