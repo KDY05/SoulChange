@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
-public class DisguiseTest implements CommandExecutor {
+public class Skin implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = (Player) commandSender;

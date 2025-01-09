@@ -11,9 +11,9 @@ public class CommandController {
     }
 
     private void registerCommands() throws NullPointerException{
-        serverInstance.getServer().getPluginCommand("change").setExecutor(new triggerChange());
+        serverInstance.getServer().getPluginCommand("change").setExecutor(new Change());
         serverInstance.getServer().getPluginCommand("heal").setExecutor(new Heal());
-        serverInstance.getServer().getPluginCommand("skin").setExecutor(new DisguiseTest());
+        serverInstance.getServer().getPluginCommand("skin").setExecutor(new Skin());
     }
 }
 
