@@ -15,6 +15,7 @@ public class ChangeSkin {
     public void changeSkin(Player player, String name){
         Skin skin = getSkinFromCache(name);
         SoulChange.getDisguiseProvider().updatePlayerSilently(player, skin, name);
+        SoulChange.getNameCacheManager().setName(player.getUniqueId(), name);
     }
 
     private Skin getSkinFromCache(String name) {

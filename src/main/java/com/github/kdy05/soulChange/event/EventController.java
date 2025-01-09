@@ -12,6 +12,6 @@ public class EventController {
     }
 
     private void registerEvents(){
-        Bukkit.getServer().getPluginManager().registerEvents(new OnQuitAndJoin(), serverInstance);
+        Bukkit.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), serverInstance);
     }
 }
