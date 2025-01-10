@@ -6,106 +6,198 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class ChangeStatus {
 
     public static void changeStatus() {
         Player[] onlinePlayers = Bukkit.getOnlinePlayers().toArray(new Player[0]);
+
+        // 2명 미만이면 중지.
         int size = onlinePlayers.length;
         if (size < 2) {
             return;
         }
 
-        // 어그로 몹
+        // 1초 무적 적용과 공지 타이틀 출력.
+        applyInvulnerabeAndTitle(onlinePlayers);
 
-        for (Player player : onlinePlayers){
+        /* 모든 플레이어들의 상태를 저장.
+        체력, 배고픔, 레벨, 공기, 불타는 시간, 인벤토리, 현재 위치,
+        리스폰 위치, 포션효과, 게임모드, 변장한 스킨의 이름 + 어그로 끌린 몹 */
+        double[] playerHealths = saveHealth(onlinePlayers);
+        float[][] playerFoodLevels = saveFoodLevels(onlinePlayers);
+        float[][] playerExps = saveExperience(onlinePlayers);
+        int[] playerAir = saveAir(onlinePlayers);
+        int[] playerFire = saveFireTicks(onlinePlayers);
+        ItemStack[][] playerInventories = saveInventories(onlinePlayers);
+        Location[] playerLocations = saveLocations(onlinePlayers);
+        Location[] playerRespawnLocations = saveRespawnLocations(onlinePlayers);
+        ArrayList<PotionEffect>[] playerPotions = savePotionEffects(onlinePlayers);
+        ArrayList<Entity>[] playerAggros = saveAggroStatus(onlinePlayers);
+        GameMode[] playerGameModes = saveGameModes(onlinePlayers);
+        String[] playerNames = savePlayerNames(onlinePlayers);
+
+        // 상태를 적용할 대상의 인덱스를 생성. 단 자기 자신의 상태를 적용할 수 없음.
+        int[] targetPlayers = generateDerangement(size);
+
+        // 각 플레이어에게 랜덤한 다른 플레이어의 상태를 적용.
+        for (int i = 0; i < size; i++) {
+            int target = targetPlayers[i];
+            applyStatus(onlinePlayers[i], playerHealths[target], playerFoodLevels[target], playerExps[target],
+                    playerAir[target], playerFire[target], playerInventories[target], playerLocations[target],
+                    playerRespawnLocations[target], playerPotions[target], playerAggros[target], playerGameModes[target],
+                    playerNames[target]);
+        }
+    }
+
+    private static void applyInvulnerabeAndTitle(Player[] players) {
+        for (Player player : players) {
             // 1초 무적
             player.setInvulnerable(true);
             Bukkit.getScheduler().runTaskLater(SoulChange.getServerInstance(),
                     () -> player.setInvulnerable(false), 20L);
-            // 타이틀 메시지
+            // 공지 타이틀
             Bukkit.getScheduler().runTaskLater(SoulChange.getServerInstance(),
                     () -> player.sendTitle("", ChatColor.GRAY + "모든 플레이어들의 영혼이 뒤바뀌었습니다!", 5, 50, 5), 5L);
         }
-
-        double[] playerHealths = new double[size]; // 플레이어 체력 저장
-        float[][] playerFoodLevel = new float[size][2]; // 플레이어 배고픔 저장
-        float[][] playerExp = new float[size][2]; // 플레이어 레벨 저장
-        int[] playerAir = new int[size]; // 플레이어 산소 저장
-        int[] playerFire = new int[size]; // 플레이어 불타는 상태 저장
-        ItemStack[][] playerInventory = new ItemStack[size][]; // 플레이어 인벤토리 저장
-        Location[] playerLocation = new Location[size]; // 플레이어 위치 저장
-        Location[] playerRespawnLocation = new Location[size]; // 플레이어 리스폰 위치 저장
-        List<PotionEffect>[] playerPotion = new List[size]; // 플레이어 포션 이펙트 저장
-        GameMode[] playerGameMode = new GameMode[size]; // 플레이어 게임모드 저장
-        String[] playerName = new String[size]; // 플레이어 이름 저장
-
-
-        for (int i = 0; i < size; i++) {
-            playerHealths[i] = onlinePlayers[i].getHealth();
-            playerFoodLevel[i][0] = onlinePlayers[i].getFoodLevel();
-            playerFoodLevel[i][1] = onlinePlayers[i].getSaturation();
-            playerExp[i][0] = onlinePlayers[i].getLevel();
-            playerExp[i][1] = onlinePlayers[i].getExp();
-            playerAir[i] = onlinePlayers[i].getRemainingAir();
-            playerFire[i] = onlinePlayers[i].getFireTicks();
-            playerInventory[i] = onlinePlayers[i].getInventory().getContents();
-            playerLocation[i] = onlinePlayers[i].getLocation();
-            playerRespawnLocation[i] = onlinePlayers[i].getRespawnLocation();
-            playerPotion[i] = onlinePlayers[i].getActivePotionEffects().stream().toList();
-            for(PotionEffect potionEffect : playerPotion[i]){
-                onlinePlayers[i].removePotionEffect(potionEffect.getType());
-            }
-            playerGameMode[i] = onlinePlayers[i].getGameMode();
-            playerName[i] = onlinePlayers[i].getName();
-        }
-
-        int[] targetPlayers = generateDerangement(size);
-
-        for (int i = 0; i < size; i++) {
-            int target = targetPlayers[i];
-
-            // 상태 불러오기
-            double newHealth = playerHealths[target];
-            float[] newFoodLevel = playerFoodLevel[target];
-            int newLevel = (int) playerExp[target][0];
-            float newExp = playerExp[target][1];
-            int newAir = playerAir[target];
-            int newFire = playerFire[target];
-            ItemStack[] newInventory = playerInventory[target];
-            Location newLocation = playerLocation[target];
-            Location newRespawnLocation = playerRespawnLocation[target];
-            List<PotionEffect> newPotion = playerPotion[target];
-            GameMode newGameMode = playerGameMode[target];
-            String newName = playerName[target];
-
-            // 싱태 적용
-            Player player = onlinePlayers[i];
-            player.setHealth(newHealth);
-            player.setFoodLevel((int) newFoodLevel[0]);
-            player.setSaturation(newFoodLevel[1]);
-            player.setLevel(newLevel);
-            player.setExp(newExp);
-            player.setRemainingAir(newAir);
-            player.setFireTicks(newFire);
-            player.getInventory().setContents(newInventory);
-            player.teleport(newLocation);
-            player.setRespawnLocation(newRespawnLocation, true);
-            player.addPotionEffects(newPotion);
-            player.setGameMode(newGameMode);
-            ChangeSkin changeSkin = new ChangeSkin();
-            changeSkin.changeSkin(player, newName);
-        }
     }
 
-    // derangement 생성 함수
-    public static int[] generateDerangement(int n) {
+    private static double[] saveHealth(Player[] players) {
+        double[] healths = new double[players.length];
+        for (int i = 0; i < players.length; i++) {
+            healths[i] = players[i].getHealth();
+        }
+        return healths;
+    }
+
+    private static float[][] saveFoodLevels(Player[] players) {
+        float[][] foodLevels = new float[players.length][2];
+        for (int i = 0; i < players.length; i++) {
+            foodLevels[i][0] = players[i].getFoodLevel();
+            foodLevels[i][1] = players[i].getSaturation();
+        }
+        return foodLevels;
+    }
+
+    private static float[][] saveExperience(Player[] players) {
+        float[][] exps = new float[players.length][2];
+        for (int i = 0; i < players.length; i++) {
+            exps[i][0] = players[i].getLevel();
+            exps[i][1] = players[i].getExp();
+        }
+        return exps;
+    }
+
+    private static int[] saveAir(Player[] players) {
+        int[] air = new int[players.length];
+        for (int i = 0; i < players.length; i++) {
+            air[i] = players[i].getRemainingAir();
+        }
+        return air;
+    }
+
+    private static int[] saveFireTicks(Player[] players) {
+        int[] fireTicks = new int[players.length];
+        for (int i = 0; i < players.length; i++) {
+            fireTicks[i] = players[i].getFireTicks();
+        }
+        return fireTicks;
+    }
+
+    private static ItemStack[][] saveInventories(Player[] players) {
+        ItemStack[][] inventories = new ItemStack[players.length][];
+        for (int i = 0; i < players.length; i++) {
+            inventories[i] = players[i].getInventory().getContents();
+        }
+        return inventories;
+    }
+
+    private static Location[] saveLocations(Player[] players) {
+        Location[] locations = new Location[players.length];
+        for (int i = 0; i < players.length; i++) {
+            locations[i] = players[i].getLocation();
+        }
+        return locations;
+    }
+
+    private static Location[] saveRespawnLocations(Player[] players) {
+        Location[] respawnLocations = new Location[players.length];
+        for (int i = 0; i < players.length; i++) {
+            respawnLocations[i] = players[i].getRespawnLocation();
+        }
+        return respawnLocations;
+    }
+
+    private static ArrayList<PotionEffect>[] savePotionEffects(Player[] players) {
+        @SuppressWarnings("unchecked")
+        ArrayList<PotionEffect>[] potionEffects = new ArrayList[players.length];
+        for (int i = 0; i < players.length; i++) {
+            potionEffects[i] = new ArrayList<>(players[i].getActivePotionEffects());
+            // 기존 플레이어의 효과를 제거.
+            for (PotionEffect effect : potionEffects[i]) {
+                players[i].removePotionEffect(effect.getType());
+            }
+        }
+        return potionEffects;
+    }
+
+    private static ArrayList<Entity>[] saveAggroStatus(Player[] players) {
+        @SuppressWarnings("unchecked")
+        ArrayList<Entity>[] aggroEntities = new ArrayList[players.length];
+        Predicate<Entity> isMob = entity -> entity instanceof Mob;
+        for (int i = 0; i < players.length; i++) {
+            aggroEntities[i] = new ArrayList<>();
+            // 반지름 10m 구 범위의 어그로 끌린 몹을 저장.
+            for (Entity entity : players[i].getWorld().getNearbyEntities(players[i].getLocation(), 10, 10, 10, isMob)) {
+                if (((Mob) entity).getTarget() == players[i]) {
+                    aggroEntities[i].add(entity);
+                }
+            }
+        }
+        return aggroEntities;
+    }
+
+    private static GameMode[] saveGameModes(Player[] players) {
+        return Arrays.stream(players).map(Player::getGameMode).toArray(GameMode[]::new);
+    }
+
+    private static String[] savePlayerNames(Player[] players) {
+        return Arrays.stream(players).map(Player::getName).toArray(String[]::new);
+    }
+
+    private static void applyStatus(Player player, double health, float[] foodLevel, float[] exp,
+                                    int air, int fireTicks, ItemStack[] inventory, Location location,
+                                    Location respawnLocation, ArrayList<PotionEffect> potions,
+                                    ArrayList<Entity> aggros, GameMode gameMode, String playerName) {
+        player.setHealth(health);
+        player.setFoodLevel((int) foodLevel[0]);
+        player.setSaturation(foodLevel[1]);
+        player.setLevel((int) exp[0]);
+        player.setExp(exp[1]);
+        player.setRemainingAir(air);
+        player.setFireTicks(fireTicks);
+        player.getInventory().setContents(inventory);
+        player.teleport(location);
+        player.setRespawnLocation(respawnLocation, true);
+        player.addPotionEffects(potions);
+        for (Entity entity : aggros) {
+            ((Mob) entity).setTarget(player);
+        }
+        player.setGameMode(gameMode);
+        new ChangeSkin().changeSkin(player, playerName);
+    }
+
+    private static int[] generateDerangement(int n) {
         Random random = new Random();
         int[] result = new int[n];
         for (int i = 0; i < n; i++) {

@@ -32,7 +32,7 @@ public class Change implements CommandExecutor {
                 player.sendMessage(ChatColor.GREEN +"랜덤 타이머가 시작되었습니다.");
             } else if (strings[0].equals("stop")) {
                 periodicTask.stop();
-                player.sendMessage(ChatColor.GREEN +"랜덤 타이머가 종료되었습니다.");
+                player.sendMessage(ChatColor.RED +"랜덤 타이머가 종료되었습니다.");
             }
         }
         return false;
