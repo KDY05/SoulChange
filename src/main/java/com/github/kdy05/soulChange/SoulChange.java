@@ -18,7 +18,8 @@ public final class SoulChange extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        config.addDefault("for_test", true);
+        config.addDefault("timer.interval-seconds", 30);
+        config.addDefault("timer.probability", 0.33);
         config.options().copyDefaults(true);
         saveConfig();
 

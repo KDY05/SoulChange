@@ -12,8 +12,7 @@ public class Change implements CommandExecutor {
     private final PeriodicTask periodicTask;
 
     public Change(){
-        periodicTask = new PeriodicTask(SoulChange.getServerInstance(),
-                ChangeStatus::changeStatus, 0.33);
+        periodicTask = new PeriodicTask(SoulChange.getServerInstance(), ChangeStatus::changeStatus);
     }
 
     @Override
