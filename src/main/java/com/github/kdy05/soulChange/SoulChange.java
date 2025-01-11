@@ -5,8 +5,6 @@ import com.github.kdy05.soulChange.event.EventController;
 import com.github.kdy05.soulChange.utils.NameCacheManager;
 import net.pinger.disguise.DisguiseProvider;
 import net.pinger.disguise.DisguiseAPI;
-import org.bukkit.GameRule;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -38,11 +36,6 @@ public final class SoulChange extends JavaPlugin {
         }
 
         nameCacheManager.updateAllPlayer();
-
-        // 리스폰 화면에서 오류 발생 우려가 있어서 gamerule 설정.
-        for (World world : getServer().getWorlds())  {
-            world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-        }
 
         getLogger().info("Plugin Enabled.");
     }

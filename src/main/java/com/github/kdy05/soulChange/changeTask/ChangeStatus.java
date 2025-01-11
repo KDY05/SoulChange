@@ -20,11 +20,16 @@ import java.util.function.Predicate;
 public class ChangeStatus {
 
     public static void changeStatus() {
-        Player[] onlinePlayers = Bukkit.getOnlinePlayers().toArray(new Player[0]);
+        // 유효 플레이어 배열 생성
+        Player[] onlinePlayers = Bukkit.getOnlinePlayers().stream()
+                .filter(player -> player.getGameMode() != GameMode.SPECTATOR)  // 관전자 모드 제외
+                .filter(player -> !player.isDead())                            // 사망 상태 제외
+                .toArray(Player[]::new);
 
         // 2명 미만이면 중지.
         int size = onlinePlayers.length;
         if (size < 2) {
+            Bukkit.getLogger().info("유효 플레이어가 2명 미만입니다.");
             return;
         }
 
@@ -33,7 +38,7 @@ public class ChangeStatus {
 
         /* 모든 플레이어들의 상태를 저장.
         체력, 배고픔, 레벨, 공기, 불타는 시간, 인벤토리, 현재 위치,
-        리스폰 위치, 포션효과, 게임모드, 변장한 스킨의 이름 + 어그로 끌린 몹 */
+        리스폰 위치, 포션효과, 어그로 끌린 몹, 게임모드, 변장한 스킨의 이름 */
         double[] playerHealths = saveHealth(onlinePlayers);
         float[][] playerFoodLevels = saveFoodLevels(onlinePlayers);
         float[][] playerExps = saveExperience(onlinePlayers);
@@ -66,6 +71,8 @@ public class ChangeStatus {
             player.setInvulnerable(true);
             Bukkit.getScheduler().runTaskLater(SoulChange.getServerInstance(),
                     () -> player.setInvulnerable(false), 20L);
+        }
+        for (Player player : Bukkit.getOnlinePlayers()){
             // 공지 타이틀
             Bukkit.getScheduler().runTaskLater(SoulChange.getServerInstance(),
                     () -> player.sendTitle("", ChatColor.GRAY + "모든 플레이어들의 영혼이 뒤바뀌었습니다!", 5, 50, 5), 5L);

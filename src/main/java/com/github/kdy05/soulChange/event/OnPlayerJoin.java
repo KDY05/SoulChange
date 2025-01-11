@@ -16,8 +16,7 @@ public class OnPlayerJoin implements Listener {
         UUID uuid = player.getUniqueId();
         String name = SoulChange.getNameCacheManager().getName(uuid);
         if (name != null) {
-            ChangeSkin changeSkin = new ChangeSkin();
-            changeSkin.changeSkin(player, name);
+            new ChangeSkin().changeSkin(player, name);
         }
     }
 }

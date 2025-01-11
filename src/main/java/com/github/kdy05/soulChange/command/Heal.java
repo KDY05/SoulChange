@@ -1,3 +1,4 @@
+// Note: This Class is for developing. You can ignore it.
 package com.github.kdy05.soulChange.command;
 
 import org.bukkit.command.Command;

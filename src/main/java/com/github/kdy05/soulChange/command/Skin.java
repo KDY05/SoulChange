@@ -24,16 +24,14 @@ public class Skin implements CommandExecutor {
                 SoulChange.getDisguiseProvider().resetPlayer(player);
                 return false;
             }
-            ChangeSkin changeSkin = new ChangeSkin();
-            changeSkin.changeSkin(player, strings[0]);
+            new ChangeSkin().changeSkin(player, strings[0]);
         } else if (strings.length == 2) {
             Player target = Bukkit.matchPlayer(strings[0]).getFirst();
             if (Objects.equals(strings[1], "reset")){
                 SoulChange.getDisguiseProvider().resetPlayer(target);
                 return false;
             }
-            ChangeSkin changeSkin = new ChangeSkin();
-            changeSkin.changeSkin(target, strings[1]);
+            new ChangeSkin().changeSkin(target, strings[1]);
         }
         return false;
     }
