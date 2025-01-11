@@ -10,6 +10,9 @@ import org.bukkit.potion.PotionEffect;
 public class Heal implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (!commandSender.isOp()) {
+            return false;
+        }
         Player player = (Player) commandSender;
         player.setHealth(20.0);
         player.setFoodLevel(20);

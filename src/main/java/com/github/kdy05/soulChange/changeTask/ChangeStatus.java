@@ -198,6 +198,7 @@ public class ChangeStatus {
         player.setRespawnLocation(respawnLocation, true);
         player.addPotionEffects(potions);
         for (Entity entity : aggros) {
+            ((Mob) entity).setTarget(null);
             ((Mob) entity).setTarget(player);
         }
         player.setGameMode(gameMode);

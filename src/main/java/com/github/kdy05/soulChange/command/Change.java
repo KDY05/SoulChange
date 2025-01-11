@@ -18,6 +18,9 @@ public class Change implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (!commandSender.isOp()) {
+            return false;
+        }
         if (strings.length > 1) {
             commandSender.sendMessage( ChatColor.YELLOW + "/change (start|stop)");
             return false;
