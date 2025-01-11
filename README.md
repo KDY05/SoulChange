@@ -1,6 +1,5 @@
 # Soul Change
 
----
 * Supported minecraft version: 1.21 only (Paper server recommended)
 
 * Dependency: DisguiseAPI ([Link](https://www.spigotmc.org/resources/disguiseapi.103942/))
@@ -13,7 +12,6 @@
 
 ## Features
 
----
 * 다음과 같은 플레이어의 상태를 바꾸어 영혼 교환을 구현하였습니다.
     * 체력
     * 배고픔
@@ -36,16 +34,15 @@
   * 렌더 거리, 키 지정 등의 모든 클라이언트 세팅
 
 
-* 30초마다 33%의 확률로 모든 플레이어의 영혼을 뒤바꾸는 랜덤 타이머를 지원합니다.
+* 30초마다 33%의 확률로 모든 플레이어의 영혼을 교환하는 랜덤 타이머를 지원합니다.
   * 서버 재시작 혹은 reload 시 타이머를 다시 시작해야 하니 주의하세요.
   * config.yml에서 기본 시간 간격과 확률을 수정할 수 있습니다.
 
 ## Commands
 
----
 * /change : 즉시 모든 플레이어의 영혼을 뒤바꿉니다.
-* /change \[start|stop\] : 30초마다 33%의 확률로 모든 플레이어의 영혼을 뒤바꾸는 랜덤 타이머를 시작하고 중지합니다.
+* /change \[start|stop\] : 30초마다 33%의 확률로 모든 플레이어의 영혼을 교환하는 랜덤 타이머를 시작하고 중지합니다.
 
 
-* /skin \[nickname\] : 플러그인 작동 중에 오류가 발생한다면, 해당 명령어로 닉네임에 해당하는 스킨과 이름표로 변장할 수 있습니다.
+* /skin \[nickname\] : 플러그인 작동 중에 오류가 발생한다면, 해당 명령어로 'nickname'에 해당하는 스킨과 이름표로 직접 변장할 수 있습니다.
 * /skin \[nickname1\] \[nickname2\] : 'nickname1'으로 변장한 플레이어를 'nickname2'로 변장하게 합니다.
