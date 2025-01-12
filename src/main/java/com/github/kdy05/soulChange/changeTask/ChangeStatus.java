@@ -37,16 +37,18 @@ public class ChangeStatus {
         applyInvulnerabeAndTitle(onlinePlayers);
 
         /* 모든 플레이어들의 상태를 저장.
-        체력, 배고픔, 레벨, 공기, 불타는 시간, 인벤토리, 현재 위치,
-        리스폰 위치, 포션효과, 어그로 끌린 몹, 게임모드, 변장한 스킨의 이름 */
+        체력, 배고픔, 레벨, 공기, 불타는 시간, 인벤토리, 핫바 슬롯 위치, 현재 위치,
+        리스폰 위치, 탑승 상태, 포션효과, 어그로 끌린 몹, 게임모드, 변장한 스킨의 이름 */
         double[] playerHealths = saveHealth(onlinePlayers);
         float[][] playerFoodLevels = saveFoodLevels(onlinePlayers);
         float[][] playerExps = saveExperience(onlinePlayers);
         int[] playerAir = saveAir(onlinePlayers);
         int[] playerFire = saveFireTicks(onlinePlayers);
         ItemStack[][] playerInventories = saveInventories(onlinePlayers);
+        int[] playerSlotPos = saveSlotPos(onlinePlayers);
         Location[] playerLocations = saveLocations(onlinePlayers);
         Location[] playerRespawnLocations = saveRespawnLocations(onlinePlayers);
+        Entity[] playerVehicle = saveVehicles(onlinePlayers);
         ArrayList<PotionEffect>[] playerPotions = savePotionEffects(onlinePlayers);
         ArrayList<Entity>[] playerAggros = saveAggroStatus(onlinePlayers);
         GameMode[] playerGameModes = saveGameModes(onlinePlayers);
@@ -59,18 +61,18 @@ public class ChangeStatus {
         for (int i = 0; i < size; i++) {
             int target = targetPlayers[i];
             applyStatus(onlinePlayers[i], playerHealths[target], playerFoodLevels[target], playerExps[target],
-                    playerAir[target], playerFire[target], playerInventories[target], playerLocations[target],
-                    playerRespawnLocations[target], playerPotions[target], playerAggros[target], playerGameModes[target],
-                    playerNames[target]);
+                    playerAir[target], playerFire[target], playerInventories[target], playerSlotPos[target],
+                    playerLocations[target], playerRespawnLocations[target], playerVehicle[target], playerPotions[target],
+                    playerAggros[target], playerGameModes[target], playerNames[target]);
         }
     }
 
     private static void applyInvulnerabeAndTitle(Player[] players) {
         for (Player player : players) {
-            // 1초 무적
+            // 0.5초 무적
             player.setInvulnerable(true);
             Bukkit.getScheduler().runTaskLater(SoulChange.getServerInstance(),
-                    () -> player.setInvulnerable(false), 20L);
+                    () -> player.setInvulnerable(false), 10L);
         }
         for (Player player : Bukkit.getOnlinePlayers()){
             // 공지 타이틀
@@ -129,6 +131,14 @@ public class ChangeStatus {
         return inventories;
     }
 
+    private static int[] saveSlotPos(Player[] players){
+        int[] slotpos = new int[players.length];
+        for (int i = 0; i < players.length; i++) {
+            slotpos[i] = players[i].getInventory().getHeldItemSlot();
+        }
+        return slotpos;
+    }
+
     private static Location[] saveLocations(Player[] players) {
         Location[] locations = new Location[players.length];
         for (int i = 0; i < players.length; i++) {
@@ -143,6 +153,14 @@ public class ChangeStatus {
             respawnLocations[i] = players[i].getRespawnLocation();
         }
         return respawnLocations;
+    }
+
+    private static Entity[] saveVehicles(Player[] players) {
+        Entity[] vehicles = new Entity[players.length];
+        for (int i = 0; i < players.length; i++) {
+            vehicles[i] = players[i].getVehicle();
+        }
+        return vehicles;
     }
 
     private static ArrayList<PotionEffect>[] savePotionEffects(Player[] players) {
@@ -183,8 +201,8 @@ public class ChangeStatus {
     }
 
     private static void applyStatus(Player player, double health, float[] foodLevel, float[] exp,
-                                    int air, int fireTicks, ItemStack[] inventory, Location location,
-                                    Location respawnLocation, ArrayList<PotionEffect> potions,
+                                    int air, int fireTicks, ItemStack[] inventory, int slotPos, Location location,
+                                    Location respawnLocation, Entity vehicle, ArrayList<PotionEffect> potions,
                                     ArrayList<Entity> aggros, GameMode gameMode, String playerName) {
         player.setHealth(health);
         player.setFoodLevel((int) foodLevel[0]);
@@ -194,8 +212,12 @@ public class ChangeStatus {
         player.setRemainingAir(air);
         player.setFireTicks(fireTicks);
         player.getInventory().setContents(inventory);
+        player.getInventory().setHeldItemSlot(slotPos);
         player.teleport(location);
         player.setRespawnLocation(respawnLocation, true);
+        if (vehicle != null) {
+            vehicle.addPassenger(player);
+        }
         player.addPotionEffects(potions);
         for (Entity entity : aggros) {
             ((Mob) entity).setTarget(null);
