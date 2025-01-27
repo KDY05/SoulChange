@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SoulChange extends JavaPlugin {
-    private static SoulChange serverInstance;
+    private static SoulChange plugin;
     private static NameCacheManager nameCacheManager;
     private static DisguiseProvider disguiseProvider;
 
@@ -34,7 +34,7 @@ public final class SoulChange extends JavaPlugin {
     public void onEnable() {
         initConfig();
 
-        serverInstance = this;
+        plugin = this;
         PluginEvents.registerEvents(this);
         PluginCommands.registerCommands();
         nameCacheManager = new NameCacheManager();
@@ -59,7 +59,7 @@ public final class SoulChange extends JavaPlugin {
 
 
     public static SoulChange getPlugin(){
-        return serverInstance;
+        return plugin;
     }
     
     public static NameCacheManager getNameCacheManager() {

@@ -5,6 +5,8 @@ depend: [DisguiseAPI]
 api-version: '1.21'
 commands:
   change:
-    description: change command
+    description: handles changing souls.
   skin:
-    description: skin command
+    description: changes skin manually.
+  reconfig:
+    description: reloads config.yml file.

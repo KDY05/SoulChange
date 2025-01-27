@@ -8,5 +8,6 @@ public class PluginCommands {
     public static void registerCommands() throws NullPointerException {
         Objects.requireNonNull(Bukkit.getServer().getPluginCommand("change")).setExecutor(new Change());
         Objects.requireNonNull(Bukkit.getServer().getPluginCommand("skin")).setExecutor(new Skin());
+        Objects.requireNonNull(Bukkit.getServer().getPluginCommand("reconfig")).setExecutor(new ReloadConfig());
     }
 }

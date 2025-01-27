@@ -24,6 +24,10 @@ public class Skin implements CommandExecutor {
         }
 
         switch (strings.length) {
+            case 0:
+                player.sendMessage(SoulChange.PLUGIN_ID + "Your name is " + player.getName() + "(" + player.getUniqueId() + ")" + ".");
+                return false;
+
             case 1:
                 if (Objects.equals(strings[0], "reset")) {
                     SoulChange.getDisguiseProvider().resetPlayer(player);
@@ -31,6 +35,7 @@ public class Skin implements CommandExecutor {
                 }
                 new ChangeSkin().changeSkin(player, strings[0]);
                 player.sendMessage(SoulChange.PLUGIN_ID + "정상적으로 처리되었습니다.");
+                return false;
 
             case 2:
                 Player target;
@@ -46,9 +51,10 @@ public class Skin implements CommandExecutor {
                 }
                 new ChangeSkin().changeSkin(target, strings[1]);
                 player.sendMessage(SoulChange.PLUGIN_ID + "정상적으로 처리되었습니다.");
+                return false;
 
             default:
-                player.sendMessage(SoulChange.PLUGIN_ID + "Your name is " + player.getName() + "(" + player.getUniqueId() + ")" + ".");
+                player.sendMessage(SoulChange.PLUGIN_ID + "잘못된 사용");
         }
 
         return false;

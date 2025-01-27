@@ -7,14 +7,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class Change implements CommandExecutor {
-    private final PeriodicTask periodicTask;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Change(){
-        periodicTask = new PeriodicTask(SoulChange.getPlugin(), ChangeStatus::changeStatus);
-    }
+public class Change implements CommandExecutor, TabCompleter {
+    private PeriodicTask periodicTask;
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -28,6 +29,7 @@ public class Change implements CommandExecutor {
             return false;
         } else if (strings.length == 1) {
             if (strings[0].equals("start")){
+                periodicTask = new PeriodicTask(SoulChange.getPlugin(), ChangeStatus::changeStatus);
                 periodicTask.start();
                 commandSender.sendMessage(SoulChange.PLUGIN_ID +"랜덤 타이머가 시작되었습니다.");
             } else if (strings[0].equals("stop")) {
@@ -41,5 +43,15 @@ public class Change implements CommandExecutor {
         }
 
         return false;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        List<String> completions = new ArrayList<>();
+        if (strings.length == 1) {
+            completions.add("start");
+            completions.add("stop");
+        }
+        return completions;
     }
 }
