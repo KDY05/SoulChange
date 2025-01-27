@@ -1,6 +1,5 @@
-package com.github.kdy05.soulChange.changeTask;
+package com.github.kdy05.soulChange;
 
-import com.github.kdy05.soulChange.SoulChange;
 import com.github.kdy05.soulChange.utils.ChangeSkin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -71,12 +70,12 @@ public class ChangeStatus {
         for (Player player : players) {
             // 0.5초 무적
             player.setInvulnerable(true);
-            Bukkit.getScheduler().runTaskLater(SoulChange.getServerInstance(),
+            Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
                     () -> player.setInvulnerable(false), 10L);
         }
         for (Player player : Bukkit.getOnlinePlayers()){
             // 공지 타이틀
-            Bukkit.getScheduler().runTaskLater(SoulChange.getServerInstance(),
+            Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
                     () -> player.sendTitle("", ChatColor.GRAY + "모든 플레이어들의 영혼이 뒤바뀌었습니다!", 5, 50, 5), 5L);
         }
     }

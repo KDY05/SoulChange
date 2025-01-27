@@ -12,6 +12,7 @@ import java.util.UUID;
 public class OnPlayerJoin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e){
+        // 재접속 시 스킨 유지
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
         String name = SoulChange.getNameCacheManager().getName(uuid);

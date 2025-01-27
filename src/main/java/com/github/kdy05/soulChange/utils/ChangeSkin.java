@@ -13,7 +13,7 @@ public class ChangeSkin {
     캐싱을 하지 않으면 getFromMojang()의 접근 횟수 제한 때문에 오류 발생 여지가 있다. */
     private static final Map<String, Skin> skinCache = new ConcurrentHashMap<>();
 
-    public void changeSkin(Player player, String name){
+    public void changeSkin(Player player, String name) {
         Skin skin = getSkinFromCache(name);
         SoulChange.getDisguiseProvider().updatePlayerSilently(player, skin, name);
         SoulChange.getNameCacheManager().setName(player.getUniqueId(), name);

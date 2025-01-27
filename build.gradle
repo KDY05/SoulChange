@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jetbrains:annotations:24.0.1'
     compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
     compileOnly 'net.pinger.disguise:API:1.0-SNAPSHOT'
     compileOnly 'net.pinger.disguise:API:1.4.0'

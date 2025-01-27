@@ -6,7 +6,5 @@ api-version: '1.21'
 commands:
   change:
     description: change command
-  heal:
-    description: heal command
   skin:
     description: skin command
