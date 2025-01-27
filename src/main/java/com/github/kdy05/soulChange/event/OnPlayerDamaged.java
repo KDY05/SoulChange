@@ -19,12 +19,14 @@ public class OnPlayerDamaged implements Listener {
             return;
         }
 
-        if (SoulChange.getPlugin().getConfig().getBoolean("change-on-damaged")){
-            changeStatus(e);
+        if (SoulChange.getPlugin().getConfig().getBoolean("damage-share")){
+            shareDamage(e);
         }
 
-        if (SoulChange.getPlugin().getConfig().getBoolean("damage-share"))
-            shareDamage(e);
+        if (SoulChange.getPlugin().getConfig().getBoolean("change-on-damaged")){
+            Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(), () ->
+                    changeStatus(e), 1);
+        }
     }
 
     private void shareDamage(EntityDamageEvent e) {
@@ -33,7 +35,8 @@ public class OnPlayerDamaged implements Listener {
         }
 
         Player origin = (Player) e.getEntity();
-        double damage = e.getDamage();
+        double rate = SoulChange.getPlugin().getConfig().getDouble("damage-share-rate", 1.0);
+        double damage = e.getFinalDamage() * rate;
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player == origin) {
                 continue;
