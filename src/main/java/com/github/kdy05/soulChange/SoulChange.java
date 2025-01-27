@@ -26,6 +26,8 @@ public final class SoulChange extends JavaPlugin {
         }
         config.addDefault("timer.interval-seconds", 30);
         config.addDefault("timer.probability", 0.33);
+        config.addDefault("damage-share", false);
+        config.addDefault("change-on-damaged", false);
         config.options().copyDefaults(true);
         saveConfig();
     }

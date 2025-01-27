@@ -32,8 +32,8 @@ public class ChangeStatus {
             return;
         }
 
-        // 1초 무적 적용과 공지 타이틀 출력.
-        applyInvulnerabeAndTitle(onlinePlayers);
+        // 공지 타이틀 출력.
+        sendTitleToPlayers();
 
         /* 모든 플레이어들의 상태를 저장.
         체력, 배고픔, 레벨, 공기, 불타는 시간, 인벤토리, 핫바 슬롯 위치, 현재 위치,
@@ -66,13 +66,7 @@ public class ChangeStatus {
         }
     }
 
-    private static void applyInvulnerabeAndTitle(Player[] players) {
-        for (Player player : players) {
-            // 0.5초 무적
-            player.setInvulnerable(true);
-            Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
-                    () -> player.setInvulnerable(false), 10L);
-        }
+    private static void sendTitleToPlayers() {
         for (Player player : Bukkit.getOnlinePlayers()){
             // 공지 타이틀
             Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),

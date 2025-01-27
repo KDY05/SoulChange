@@ -34,7 +34,7 @@ public class Skin implements CommandExecutor {
                     return false;
                 }
                 new ChangeSkin().changeSkin(player, strings[0]);
-                player.sendMessage(SoulChange.PLUGIN_ID + "정상적으로 처리되었습니다.");
+                player.sendMessage(SoulChange.PLUGIN_ID + "스킨을 변경하였습니다.");
                 return false;
 
             case 2:
@@ -50,7 +50,7 @@ public class Skin implements CommandExecutor {
                     return false;
                 }
                 new ChangeSkin().changeSkin(target, strings[1]);
-                player.sendMessage(SoulChange.PLUGIN_ID + "정상적으로 처리되었습니다.");
+                player.sendMessage(SoulChange.PLUGIN_ID + "스킨을 변경하였습니다.");
                 return false;
 
             default:
