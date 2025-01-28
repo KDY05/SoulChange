@@ -28,12 +28,21 @@ public class Change implements CommandExecutor, TabCompleter {
             commandSender.sendMessage( ChatColor.YELLOW + "/change (start|stop)");
             return false;
         } else if (strings.length == 1) {
-            if (strings[0].equals("start")){
+            if (strings[0].equals("start")) {
+                if (periodicTask != null) {
+                    commandSender.sendMessage(SoulChange.PLUGIN_ID +"이미 타이머가 실행 중입니다. 종료 후 다시 실행해주세요.");
+                    return false;
+                }
                 periodicTask = new PeriodicTask(SoulChange.getPlugin(), ChangeStatus::changeStatus);
                 periodicTask.start();
                 commandSender.sendMessage(SoulChange.PLUGIN_ID +"랜덤 타이머가 시작되었습니다.");
             } else if (strings[0].equals("stop")) {
+                if (periodicTask == null) {
+                    commandSender.sendMessage(SoulChange.PLUGIN_ID +"실행 중인 타이머가 없습니다.");
+                    return false;
+                }
                 periodicTask.stop();
+                periodicTask = null;
                 commandSender.sendMessage(SoulChange.PLUGIN_ID +"랜덤 타이머가 종료되었습니다.");
             } else {
                 commandSender.sendMessage(ChatColor.YELLOW + "잘못된 인자");
