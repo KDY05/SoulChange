@@ -1,5 +1,5 @@
 name: SoulChange
-version: '1.0-SNAPSHOT'
+version: '1.2.0'
 main: com.github.kdy05.soulChange.SoulChange
 depend: [DisguiseAPI]
 api-version: '1.21'

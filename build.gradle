@@ -20,8 +20,7 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains:annotations:24.0.1'
-    compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
-    compileOnly 'net.pinger.disguise:API:1.0-SNAPSHOT'
+    compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
     compileOnly 'net.pinger.disguise:API:1.4.0'
 }
 
@@ -54,12 +53,5 @@ processResources {
 
 tasks.jar {
     archiveFileName = 'SoulChange.jar'
-    destinationDirectory = file("D:\\Workspace\\minecraft\\Servers\\Paper210\\plugins")
-    doLast {
-        // 기본 위치 외에 추가로 복사할 경로들
-        copy {
-            from archiveFile
-            into file('D:\\Workspace\\minecraft\\Servers\\Paper210-2\\plugins')
-        }
-    }
+    destinationDirectory = file("D:\\Workspace\\minecraft\\Servers\\SoulChange\\plugins")
 }
