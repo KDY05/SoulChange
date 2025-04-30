@@ -7,7 +7,6 @@ import net.pinger.disguise.DisguiseProvider;
 import net.pinger.disguise.DisguiseAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -17,29 +16,12 @@ public final class SoulChange extends JavaPlugin {
     private static NameCacheManager nameCacheManager;
     private static DisguiseProvider disguiseProvider;
 
-    FileConfiguration config = this.getConfig();
     public static final String PLUGIN_ID = ChatColor.LIGHT_PURPLE + "[SoulChange] " + ChatColor.WHITE;
-
-    private void initConfig() {
-        if (!getDataFolder().exists()) {
-            if (getDataFolder().mkdirs()){
-                getLogger().info("데이터 폴더가 정상적으로 생성되었습니다.");
-            } else {
-                getLogger().severe("데이터 폴더를 생성하지 못했습니다.");
-            }
-        }
-        config.addDefault("timer.interval-seconds", 30);
-        config.addDefault("timer.probability", 0.33);
-        config.addDefault("change-on-damaged", false);
-        config.addDefault("damage-share", false);
-        config.addDefault("damage-share-rate", 1.0);
-        config.options().copyDefaults(true);
-        saveConfig();
-    }
 
     @Override
     public void onEnable() {
-        initConfig();
+        // config 불러오기
+        saveDefaultConfig();
 
         // static 변수 할당
         plugin = this;
@@ -64,8 +46,9 @@ public final class SoulChange extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        saveDefaultConfig();
+        saveConfig();
         getLogger().info("Disabling plugin completed.");
+        plugin = null;
     }
 
 
