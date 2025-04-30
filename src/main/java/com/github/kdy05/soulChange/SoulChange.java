@@ -46,7 +46,6 @@ public final class SoulChange extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        saveConfig();
         getLogger().info("Disabling plugin completed.");
         plugin = null;
     }

@@ -51,8 +51,8 @@
 ```yaml
 # 영혼 교체 타이머는 {interval-seconds}초 마다 {probability}의 확률로 작동합니다.
 timer:
-interval-seconds: 30   # 초 단위로 입력해주세요.
-probability: 0.33      # 0 ~ 1의 실수를 입력하세요.
+  interval-seconds: 30   # 초 단위로 입력해주세요.
+  probability: 0.33      # 0 ~ 1의 실수를 입력하세요.
 
 # 플레이어 피격시 영혼 교체를 실행할 지 결정합니다.
 change-on-damaged: false
@@ -62,4 +62,7 @@ damage-share: false
 
 # 공유될 대미지에 곱해지는 계수입니다.
 damage-share-rate: 1.0  # 0 ~ 1의 실수를 입력하세요.
+
+# 영혼 교체 공지의 위치를 바꾸거나 비활성화할 수 있습니다.
+notification: "TITLE" # TITLE, CHAT, NONE
 ```

@@ -69,9 +69,16 @@ public class ChangeStatus {
 
     private static void sendTitleToPlayers() {
         for (Player player : Bukkit.getOnlinePlayers()){
-            // 공지 타이틀
-            Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
-                    () -> player.sendTitle("", ChatColor.GRAY + "모든 플레이어들의 영혼이 뒤바뀌었습니다!", 5, 50, 5), 5L);
+            String option = SoulChange.getPlugin().getConfig().getString("notification", "TITLE");
+            switch (option) {
+                case "NONE" -> {
+                    return;
+                }
+                case "TITLE" -> Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
+                        () -> player.sendTitle("", ChatColor.GRAY + "모든 플레이어들의 영혼이 뒤바뀌었습니다!", 5, 50, 5), 5L);
+                case "CHAT" -> Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
+                        () -> player.sendMessage(SoulChange.PLUGIN_ID + "모든 플레이어들의 영혼이 뒤바뀌었습니다!"), 5L);
+            }
         }
     }
 

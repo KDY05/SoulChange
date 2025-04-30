@@ -11,3 +11,6 @@ damage-share: false
 
 # 공유될 대미지에 곱해지는 계수입니다.
 damage-share-rate: 1.0  # 0 ~ 1의 실수를 입력하세요.
+
+# 영혼 교체 공지의 위치를 바꾸거나 비활성화할 수 있습니다.
+notification: "TITLE" # TITLE, CHAT, NONE

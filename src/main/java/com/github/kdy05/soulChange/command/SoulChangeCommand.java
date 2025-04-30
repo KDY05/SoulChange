@@ -60,7 +60,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
 
     private void handleChange(CommandSender commandSender, String[] strings) {
         if (strings.length != 2) {
-            commandSender.sendMessage( ChatColor.YELLOW + "/sc change (start|stop|run)");
+            commandSender.sendMessage( ChatColor.YELLOW + "/sc change [start|stop|run]");
             return;
         }
 
@@ -84,7 +84,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
                 commandSender.sendMessage(SoulChange.PLUGIN_ID + "랜덤 타이머가 종료되었습니다.");
             }
             case "run" -> ChangeStatus.changeStatus();
-            default -> commandSender.sendMessage( ChatColor.YELLOW + "/sc change (start|stop|run)");
+            default -> commandSender.sendMessage( ChatColor.YELLOW + "/sc change [start|stop|run]");
         }
     }
 
@@ -102,6 +102,8 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
             case 2:
                 if (Objects.equals(strings[1], "reset")) {
                     SoulChange.getDisguiseProvider().resetPlayer(player);
+                    Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
+                            () -> SoulChange.getNameCacheManager().setName(player.getUniqueId(), player.getName()), 1L);
                     return;
                 }
                 new ChangeSkinWithCaching().changeSkin(player, strings[1]);
@@ -118,6 +120,8 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
                 }
                 if (Objects.equals(strings[2], "reset")) {
                     SoulChange.getDisguiseProvider().resetPlayer(target);
+                    Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
+                            () -> SoulChange.getNameCacheManager().setName(target.getUniqueId(), target.getName()), 1L);
                     return;
                 }
                 new ChangeSkinWithCaching().changeSkin(target, strings[2]);
