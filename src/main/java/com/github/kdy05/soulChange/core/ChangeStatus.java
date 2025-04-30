@@ -1,6 +1,7 @@
-package com.github.kdy05.soulChange;
+package com.github.kdy05.soulChange.core;
 
-import com.github.kdy05.soulChange.utils.ChangeSkin;
+import com.github.kdy05.soulChange.SoulChange;
+import com.github.kdy05.soulChange.utils.ChangeSkinWithCaching;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -217,7 +218,7 @@ public class ChangeStatus {
             ((Mob) entity).setTarget(player);
         }
         player.setGameMode(gameMode);
-        new ChangeSkin().changeSkin(player, playerName);
+        new ChangeSkinWithCaching().changeSkin(player, playerName);
     }
 
     private static int[] generateDerangement(int n) {

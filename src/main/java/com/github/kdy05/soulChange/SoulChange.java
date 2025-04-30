@@ -2,6 +2,7 @@ package com.github.kdy05.soulChange;
 
 import com.github.kdy05.soulChange.command.SoulChangeCommand;
 import com.github.kdy05.soulChange.event.SoulChangeListener;
+import com.github.kdy05.soulChange.utils.NameCacheManager;
 import net.pinger.disguise.DisguiseProvider;
 import net.pinger.disguise.DisguiseAPI;
 import org.bukkit.Bukkit;

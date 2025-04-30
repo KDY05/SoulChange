@@ -1,8 +1,8 @@
 package com.github.kdy05.soulChange.command;
 
-import com.github.kdy05.soulChange.ChangeStatus;
+import com.github.kdy05.soulChange.core.ChangeStatus;
 import com.github.kdy05.soulChange.SoulChange;
-import com.github.kdy05.soulChange.utils.ChangeSkin;
+import com.github.kdy05.soulChange.utils.ChangeSkinWithCaching;
 import com.github.kdy05.soulChange.utils.PeriodicTask;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -104,7 +104,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
                     SoulChange.getDisguiseProvider().resetPlayer(player);
                     return;
                 }
-                new ChangeSkin().changeSkin(player, strings[1]);
+                new ChangeSkinWithCaching().changeSkin(player, strings[1]);
                 player.sendMessage(SoulChange.PLUGIN_ID + "스킨을 변경하였습니다.");
                 return;
 
@@ -120,7 +120,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
                     SoulChange.getDisguiseProvider().resetPlayer(target);
                     return;
                 }
-                new ChangeSkin().changeSkin(target, strings[2]);
+                new ChangeSkinWithCaching().changeSkin(target, strings[2]);
                 player.sendMessage(SoulChange.PLUGIN_ID + "스킨을 변경하였습니다.");
                 return;
 

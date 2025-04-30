@@ -1,6 +1,6 @@
-package com.github.kdy05.soulChange;
+package com.github.kdy05.soulChange.utils;
 
-import com.github.kdy05.soulChange.utils.ChangeSkin;
+import com.github.kdy05.soulChange.SoulChange;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -66,7 +66,7 @@ public class NameCacheManager {
     public void updateAllPlayer() {
         for (Player player : Bukkit.getOnlinePlayers()){
             String name = getName(player.getUniqueId());
-            new ChangeSkin().changeSkin(player, name);
+            new ChangeSkinWithCaching().changeSkin(player, name);
         }
     }
 }

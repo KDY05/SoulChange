@@ -1,8 +1,8 @@
 package com.github.kdy05.soulChange.event;
 
-import com.github.kdy05.soulChange.ChangeStatus;
+import com.github.kdy05.soulChange.core.ChangeStatus;
 import com.github.kdy05.soulChange.SoulChange;
-import com.github.kdy05.soulChange.utils.ChangeSkin;
+import com.github.kdy05.soulChange.utils.ChangeSkinWithCaching;
 import org.bukkit.Bukkit;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
@@ -25,7 +25,7 @@ public class SoulChangeListener implements Listener {
         UUID uuid = player.getUniqueId();
         String name = SoulChange.getNameCacheManager().getName(uuid);
         if (name != null) {
-            new ChangeSkin().changeSkin(player, name);
+            new ChangeSkinWithCaching().changeSkin(player, name);
         }
     }
 
