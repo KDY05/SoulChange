@@ -1,13 +1,15 @@
 package com.github.kdy05.soulChange;
 
 import com.github.kdy05.soulChange.command.SoulChangeCommand;
-import com.github.kdy05.soulChange.event.PluginEvents;
+import com.github.kdy05.soulChange.event.SoulChangeListener;
 import net.pinger.disguise.DisguiseProvider;
 import net.pinger.disguise.DisguiseAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Objects;
 
 public final class SoulChange extends JavaPlugin {
     private static SoulChange plugin;
@@ -22,7 +24,7 @@ public final class SoulChange extends JavaPlugin {
             if (getDataFolder().mkdirs()){
                 getLogger().info("데이터 폴더가 정상적으로 생성되었습니다.");
             } else {
-                getLogger().warning("데이터 폴더를 생성하지 못했습니다.");
+                getLogger().severe("데이터 폴더를 생성하지 못했습니다.");
             }
         }
         config.addDefault("timer.interval-seconds", 30);
@@ -38,14 +40,16 @@ public final class SoulChange extends JavaPlugin {
     public void onEnable() {
         initConfig();
 
+        // static 변수 할당
         plugin = this;
-
-        PluginEvents.registerEvents(this);
-        Bukkit.getServer().getPluginCommand("soulchange").setExecutor(new SoulChangeCommand());
-
         nameCacheManager = new NameCacheManager();
         disguiseProvider = DisguiseAPI.getDefaultProvider();
 
+        // 커맨드, 이벤트 등록
+        Bukkit.getServer().getPluginManager().registerEvents(new SoulChangeListener(), this);
+        Objects.requireNonNull(Bukkit.getServer().getPluginCommand("soulchange")).setExecutor(new SoulChangeCommand());
+
+        // DisguiseAPI 의존성 검사
         if (disguiseProvider == null) {
             getLogger().info("Failed to find the provider for this version");
             getLogger().info("Disabling...");
