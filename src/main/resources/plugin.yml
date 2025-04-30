@@ -4,9 +4,6 @@ main: com.github.kdy05.soulChange.SoulChange
 depend: [DisguiseAPI]
 api-version: '1.21'
 commands:
-  change:
-    description: handles changing souls.
-  skin:
-    description: changes skin manually.
-  reconfig:
-    description: reloads config.yml file.
+  soulchange:
+    description: Plugin's Main Command
+    aliases: [sc]

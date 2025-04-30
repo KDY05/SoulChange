@@ -1,9 +1,10 @@
 package com.github.kdy05.soulChange;
 
-import com.github.kdy05.soulChange.command.PluginCommands;
+import com.github.kdy05.soulChange.command.SoulChangeCommand;
 import com.github.kdy05.soulChange.event.PluginEvents;
 import net.pinger.disguise.DisguiseProvider;
 import net.pinger.disguise.DisguiseAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,8 +39,10 @@ public final class SoulChange extends JavaPlugin {
         initConfig();
 
         plugin = this;
+
         PluginEvents.registerEvents(this);
-        PluginCommands.registerCommands();
+        Bukkit.getServer().getPluginCommand("soulchange").setExecutor(new SoulChangeCommand());
+
         nameCacheManager = new NameCacheManager();
         disguiseProvider = DisguiseAPI.getDefaultProvider();
 

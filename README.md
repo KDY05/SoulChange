@@ -26,12 +26,12 @@
 
 
 * 랜덤한 시간 간격으로 모든 플레이어의 영혼을 교체하는 타이머를 지원합니다.
-  * config.yml에서 시간 간격과 확률을 수정할 수 있습니다. ("/reconfig"로 config.yml을 reload할 수 있습니다.)
+  * config.yml에서 시간 간격과 확률을 수정할 수 있습니다.
   * 서버 재시작 혹은 reload 시 타이머를 다시 시작해야 하니 주의하세요.
 
 
 * 데미지를 입을 시 영혼이 교환되는 기능, 데미지 공유 기능을 설정할 수 있습니다. (v1.1~)
-  * config.yml에서 켜고 끌 수 있습니다. ("/reconfig"로 config.yml을 reload할 수 있습니다.)
+  * config.yml에서 켜고 끌 수 있습니다.
   * 데미지 공유는 데미지를 받은 플레이어의 '최종 데미지'가 모든 플레이어에게 '고정 데미지'로 들어가며, 데미지 공유 계수(0.0 ~ 1.0)를 설정할 수 있습니다.
 
 
@@ -39,12 +39,7 @@
 
 ## Commands
 
-* /reconfig : config.yml 파일을 reload합니다. 파일 수정 후에 입력해주세요. (v1.1~)
-
-
-* /change \[start|stop\] : 모든 플레이어의 영혼을 교환하는 랜덤 타이머를 시작하고 중지합니다.
-* /change : 즉시 모든 플레이어의 영혼을 뒤바꿉니다.
-
-
-* /skin \[nickname\] : 혹여나 플러그인 작동 중에 오류가 발생한다면, 해당 명령어로 'nickname'에 해당하는 스킨과 이름표로 직접 변장할 수 있습니다.
-* /skin \[nickname1\] \[nickname2\] : 'nickname1'으로 변장한 플레이어를 'nickname2'로 변장하게 합니다.
+* /sc(soulchange) reload: config.yml 설정을 불러옵니다.
+* /sc(soulchange) change \[start|stop|run\]: 타이머 시작(start)과 종료(run), 혹은 즉시 교체를 실행(run)합니다.
+* /sc(soulchange) skin \[player1|reset\]: player1으로 변장하거나 변장을 해제합니다.
+* /sc(soulchange) skin \[player1\] \[player2|reset\]: player1을 player2로 변장시키거나 변장을 해제합니다.
