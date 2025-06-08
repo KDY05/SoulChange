@@ -1,4 +1,4 @@
-package com.github.kdy05.soulChange.utils;
+package com.github.kdy05.soulChange.core;
 
 import com.github.kdy05.soulChange.SoulChange;
 import net.pinger.disguise.DisguiseAPI;
@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ChangeSkinWithCaching {
+public class SkinManager {
     // 스킨 캐싱을 위한 맵. 캐싱을 하지 않으면 getFromMojang()의 접근 횟수 제한 때문에 오류 발생 여지가 있음.
     private static final Map<String, Skin> skinCache = new ConcurrentHashMap<>();
 

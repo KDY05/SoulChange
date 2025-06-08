@@ -6,6 +6,9 @@ timer:
 # 플레이어 피격시 영혼 교체를 실행할 지 결정합니다.
 change-on-damaged: false
 
+# 피격 당한 플레이어를 공지할 지 결정합니다.
+notify-damaged-player: false
+
 # 대미지 공유를 활성화할 지 결정합니다.
 damage-share: false
 

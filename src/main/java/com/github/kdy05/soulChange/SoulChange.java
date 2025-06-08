@@ -1,8 +1,8 @@
 package com.github.kdy05.soulChange;
 
 import com.github.kdy05.soulChange.command.SoulChangeCommand;
-import com.github.kdy05.soulChange.event.SoulChangeListener;
-import com.github.kdy05.soulChange.utils.NameCacheManager;
+import com.github.kdy05.soulChange.listener.SoulChangeListener;
+import com.github.kdy05.soulChange.core.NameCacheManager;
 import net.pinger.disguise.DisguiseProvider;
 import net.pinger.disguise.DisguiseAPI;
 import org.bukkit.Bukkit;
@@ -29,7 +29,7 @@ public final class SoulChange extends JavaPlugin {
         disguiseProvider = DisguiseAPI.getDefaultProvider();
 
         // 커맨드, 이벤트 등록
-        Bukkit.getServer().getPluginManager().registerEvents(new SoulChangeListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new SoulChangeListener(this), this);
         Objects.requireNonNull(Bukkit.getServer().getPluginCommand("soulchange")).setExecutor(new SoulChangeCommand());
 
         // DisguiseAPI 의존성 검사
