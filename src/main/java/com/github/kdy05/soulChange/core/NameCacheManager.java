@@ -1,16 +1,12 @@
 package com.github.kdy05.soulChange.core;
 
 import com.github.kdy05.soulChange.SoulChange;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class NameCacheManager {
     private final SoulChange plugin = SoulChange.getPlugin();
@@ -61,6 +57,16 @@ public class NameCacheManager {
         nameCache.put(uuid, name);
         config.set(uuid.toString(), name);
         saveConfig();
+    }
+
+    public List<UUID> getUUIDsByName(String name) {
+        List<UUID> result = new ArrayList<>();
+        for (Map.Entry<UUID, String> entry : nameCache.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(name)) {
+                result.add(entry.getKey());
+            }
+        }
+        return result;
     }
 
 }

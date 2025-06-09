@@ -1,6 +1,6 @@
 package com.github.kdy05.soulChange.command;
 
-import com.github.kdy05.soulChange.core.ChangeStatus;
+import com.github.kdy05.soulChange.core.StatusChanger;
 import com.github.kdy05.soulChange.SoulChange;
 import com.github.kdy05.soulChange.core.SkinManager;
 import com.github.kdy05.soulChange.utils.PeriodicTask;
@@ -78,7 +78,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
                     commandSender.sendMessage(SoulChange.PLUGIN_ID + "이미 타이머가 실행 중입니다. 종료 후 다시 실행해주세요.");
                     return;
                 }
-                periodicTask = new PeriodicTask(SoulChange.getPlugin(), ChangeStatus::changeStatus);
+                periodicTask = new PeriodicTask(SoulChange.getPlugin(), StatusChanger::changeStatus);
                 periodicTask.start();
                 commandSender.sendMessage(SoulChange.PLUGIN_ID + "랜덤 타이머가 시작되었습니다.");
             }
@@ -91,7 +91,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
                 periodicTask = null;
                 commandSender.sendMessage(SoulChange.PLUGIN_ID + "랜덤 타이머가 종료되었습니다.");
             }
-            case "run" -> ChangeStatus.changeStatus();
+            case "run" -> StatusChanger.changeStatus();
             default -> commandSender.sendMessage( ChatColor.YELLOW + "/sc change [start|stop|run]");
         }
     }
@@ -108,7 +108,8 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage(SoulChange.PLUGIN_ID + "스킨을 변경하였습니다.");
                 return;
 
-            case 3:                Player target;
+            case 3:
+                Player target;
                 if (!Bukkit.matchPlayer(strings[1]).isEmpty()) {
                     target = Bukkit.matchPlayer(strings[1]).getFirst();
                 } else {

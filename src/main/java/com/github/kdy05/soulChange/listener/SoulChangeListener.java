@@ -1,6 +1,6 @@
 package com.github.kdy05.soulChange.listener;
 
-import com.github.kdy05.soulChange.core.ChangeStatus;
+import com.github.kdy05.soulChange.core.StatusChanger;
 import com.github.kdy05.soulChange.SoulChange;
 import com.github.kdy05.soulChange.core.SkinManager;
 import com.github.kdy05.soulChange.utils.MojangNameFetcher;
@@ -29,8 +29,12 @@ public class SoulChangeListener implements Listener {
     public void onPreLogin(AsyncPlayerPreLoginEvent e){
         // 메인 스레드에서 스킨 초기화 실행
         Bukkit.getScheduler().runTask(plugin, () -> {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                SoulChange.getDisguiseProvider().resetPlayer(p);
+            String name = e.getName();
+            for (UUID uuid : SoulChange.getNameCacheManager().getUUIDsByName(name)) {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null) {
+                    SoulChange.getDisguiseProvider().resetPlayer(player);
+                }
             }
         });
     }
@@ -58,7 +62,7 @@ public class SoulChangeListener implements Listener {
                 if (e.getDamageSource().getDamageType().equals(DamageType.GENERIC))
                     return;
                 notifyDamagedPlayer(e.getEntity().getUniqueId());
-                ChangeStatus.changeStatus();
+                StatusChanger.changeStatus();
             }, 1);
         }
     }
