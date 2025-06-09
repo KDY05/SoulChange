@@ -7,3 +7,10 @@ commands:
   soulchange:
     description: Plugin's Main Command
     aliases: [sc]
+permissions:
+  soulchange.use:
+    description: Allows using the basic commands
+    default: op
+  soulchange.reload:
+    description: Allows reloading configurations
+    default: op

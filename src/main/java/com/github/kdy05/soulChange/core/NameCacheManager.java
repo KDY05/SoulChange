@@ -63,12 +63,4 @@ public class NameCacheManager {
         saveConfig();
     }
 
-    public void updateAllPlayer() {
-        for (Player player : Bukkit.getOnlinePlayers()){
-            String name = getName(player.getUniqueId());
-            if (name != null) {
-                new SkinManager().changeSkin(player, name);
-            }
-        }
-    }
 }

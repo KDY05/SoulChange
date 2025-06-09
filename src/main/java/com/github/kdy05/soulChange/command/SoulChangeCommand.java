@@ -15,17 +15,18 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class SoulChangeCommand implements CommandExecutor, TabCompleter {
 
     private PeriodicTask periodicTask;
+    private static final List<String> SUB_COMMANDS = Arrays.asList("help", "reload", "change", "skin", "resetskin");
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        if (!commandSender.isOp()) {
-            commandSender.sendMessage(SoulChange.PLUGIN_ID + "운영자 권한이 필요합니다.");
+        if (!commandSender.hasPermission("soulchange.use")) {
+            commandSender.sendMessage(ChatColor.RED + "운영자 권한이 필요합니다.");
             return false;
         }
 
@@ -39,20 +40,27 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
             case "reload" -> handleReload(commandSender);
             case "change" -> handleChange(commandSender, strings);
             case "skin" -> handleSkin(commandSender, strings);
+            case "resetskin" -> handleResetSkin(commandSender, strings);
+            default -> commandSender.sendMessage(ChatColor.YELLOW + "잘못된 명령입니다.");
         }
 
         return false;
     }
 
     private void handleHelp(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.YELLOW + "/sc(soulchange) help: 이 메시지를 띄웁니다.");
-        commandSender.sendMessage(ChatColor.YELLOW + "/sc(soulchange) reload: config.yml 설정을 불러옵니다.");
-        commandSender.sendMessage(ChatColor.YELLOW + "/sc(soulchange) change [start|stop|run]: 타이머 시작(start)과 종료(run), 혹은 즉시 교체를 실행(run)합니다.");
-        commandSender.sendMessage(ChatColor.YELLOW + "/sc(soulchange) skin [player1|reset]: player1으로 변장하거나 변장을 해제합니다.");
-        commandSender.sendMessage(ChatColor.YELLOW + "/sc(soulchange) skin [player1] [player2|reset]: player1을 player2로 변장시키거나 변장을 해제합니다.");
+        commandSender.sendMessage(ChatColor.YELLOW + "/sc help: 이 메시지를 띄웁니다.");
+        commandSender.sendMessage(ChatColor.YELLOW + "/sc reload: config.yml 설정을 불러옵니다.");
+        commandSender.sendMessage(ChatColor.YELLOW + "/sc change [start|stop|run]: 타이머 시작(start)과 종료(stop), 혹은 즉시 교체(run)를 실행합니다.");
+        commandSender.sendMessage(ChatColor.YELLOW + "/sc skin [player]: player로 변장합니다.");
+        commandSender.sendMessage(ChatColor.YELLOW + "/sc skin [player1] [player2]: player1을 player2로 변장시킵니다.");
+        commandSender.sendMessage(ChatColor.YELLOW + "/sc resetskin [player]: player의 변장을 해제합니다.");
     }
 
     private void handleReload(CommandSender commandSender) {
+        if (!commandSender.hasPermission("soulchange.reload")) {
+            commandSender.sendMessage(ChatColor.RED + "리로드 권한이 필요합니다.");
+            return;
+        }
         SoulChange.getPlugin().reloadConfig();
         commandSender.sendMessage(SoulChange.PLUGIN_ID + "config.yml 파일이 새로고침되었습니다.");
         commandSender.sendMessage(SoulChange.PLUGIN_ID + ChatColor.YELLOW + "타이머가 작동 중인 경우, 재시작해야 적용됩니다.");
@@ -95,36 +103,19 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
         }
 
         switch (strings.length) {
-            case 1:
-                player.sendMessage(SoulChange.PLUGIN_ID + "Your name is " + player.getName() + "(" + player.getUniqueId() + ")" + ".");
-                return;
-
             case 2:
-                if (Objects.equals(strings[1], "reset")) {
-                    SoulChange.getDisguiseProvider().resetPlayer(player);
-                    Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
-                            () -> SoulChange.getNameCacheManager().setName(player.getUniqueId(), player.getName()), 1L);
-                    return;
-                }
-                new SkinManager().changeSkin(player, strings[1]);
+                SkinManager.changeSkin(player, strings[1]);
                 player.sendMessage(SoulChange.PLUGIN_ID + "스킨을 변경하였습니다.");
                 return;
 
-            case 3:
-                Player target;
+            case 3:                Player target;
                 if (!Bukkit.matchPlayer(strings[1]).isEmpty()) {
                     target = Bukkit.matchPlayer(strings[1]).getFirst();
                 } else {
                     player.sendMessage(SoulChange.PLUGIN_ID + "닉네임이 유효하지 않습니다.");
                     return;
                 }
-                if (Objects.equals(strings[2], "reset")) {
-                    SoulChange.getDisguiseProvider().resetPlayer(target);
-                    Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
-                            () -> SoulChange.getNameCacheManager().setName(target.getUniqueId(), target.getName()), 1L);
-                    return;
-                }
-                new SkinManager().changeSkin(target, strings[2]);
+                SkinManager.changeSkin(target, strings[2]);
                 player.sendMessage(SoulChange.PLUGIN_ID + "스킨을 변경하였습니다.");
                 return;
 
@@ -133,19 +124,44 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
         }
     }
 
+    private void handleResetSkin(CommandSender commandSender, String[] strings) {
+        Player target;
+        if (!Bukkit.matchPlayer(strings[1]).isEmpty()) {
+            target = Bukkit.matchPlayer(strings[1]).getFirst();
+        } else {
+            commandSender.sendMessage(SoulChange.PLUGIN_ID + "닉네임이 유효하지 않습니다.");
+            return;
+        }
+        SoulChange.getDisguiseProvider().resetPlayer(target);
+        Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
+                () -> SoulChange.getNameCacheManager().setName(target.getUniqueId(), target.getName()), 1L);
+    }
+
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
+                                                @NotNull String s, @NotNull String[] strings) {
+        if (!commandSender.hasPermission("soulchange.use")) {
+            return new ArrayList<>();
+        }
+
         List<String> completions = new ArrayList<>();
         if (strings.length == 1) {
-            completions.add("reload");
-            completions.add("change");
-            completions.add("skin");
-            completions.add("help");
-        } else if (strings.length == 2 && strings[0].equals("change")) {
+            return filterCompletions(strings[0]);
+        }
+        else if (strings.length == 2 && strings[0].equals("change")) {
             completions.add("start");
             completions.add("stop");
             completions.add("run");
         }
+
         return completions;
     }
+
+    @NotNull
+    private List<String> filterCompletions(@NotNull String input) {
+        return SoulChangeCommand.SUB_COMMANDS.stream()
+                .filter(completion -> completion.toLowerCase().startsWith(input.toLowerCase()))
+                .toList();
+    }
+
 }

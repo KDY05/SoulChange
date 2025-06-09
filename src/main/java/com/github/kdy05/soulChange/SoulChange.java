@@ -1,6 +1,7 @@
 package com.github.kdy05.soulChange;
 
 import com.github.kdy05.soulChange.command.SoulChangeCommand;
+import com.github.kdy05.soulChange.core.SkinManager;
 import com.github.kdy05.soulChange.listener.SoulChangeListener;
 import com.github.kdy05.soulChange.core.NameCacheManager;
 import net.pinger.disguise.DisguiseProvider;
@@ -40,7 +41,7 @@ public final class SoulChange extends JavaPlugin {
             return;
         }
 
-        nameCacheManager.updateAllPlayer();
+        SkinManager.updateAllPlayer();
         getLogger().info("Enabling plugin completed.");
     }
 
@@ -62,4 +63,5 @@ public final class SoulChange extends JavaPlugin {
     public static DisguiseProvider getDisguiseProvider(){
         return disguiseProvider;
     }
+
 }

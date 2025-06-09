@@ -224,24 +224,25 @@ public class ChangeStatus {
             ((Mob) entity).setTarget(player);
         }
         player.setGameMode(gameMode);
-        new SkinManager().changeSkin(player, playerName);
+        SkinManager.changeSkin(player, playerName);
     }
 
+    // 자기 자신과 교환되지 않도록 보장
     private static int[] generateDerangement(int n) {
         Random random = new Random();
         int[] result = new int[n];
         for (int i = 0; i < n; i++) {
             result[i] = i;
         }
+
+        // Sattolo's algorithm
         for (int i = n - 1; i > 0; i--) {
-            int j = random.nextInt(i + 1);
-            if (j == i) {
-                j = (j + 1) % (i + 1);
-            }
+            int j = random.nextInt(i); // j < i, not j <= i
             int temp = result[i];
             result[i] = result[j];
             result[j] = temp;
         }
+
         return result;
     }
 }

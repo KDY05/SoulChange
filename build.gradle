@@ -50,8 +50,3 @@ processResources {
         expand props
     }
 }
-
-tasks.jar {
-    archiveFileName = 'SoulChange.jar'
-    destinationDirectory = file("D:\\Workspace\\minecraft\\Servers\\SoulChange\\plugins")
-}

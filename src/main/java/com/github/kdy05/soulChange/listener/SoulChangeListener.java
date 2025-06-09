@@ -2,6 +2,7 @@ package com.github.kdy05.soulChange.listener;
 
 import com.github.kdy05.soulChange.core.ChangeStatus;
 import com.github.kdy05.soulChange.SoulChange;
+import com.github.kdy05.soulChange.core.SkinManager;
 import com.github.kdy05.soulChange.utils.MojangNameFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.damage.DamageSource;
@@ -38,7 +39,7 @@ public class SoulChangeListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
         // 재접속 시 스킨 유지
         Bukkit.getScheduler().runTaskLater(plugin,
-                () -> SoulChange.getNameCacheManager().updateAllPlayer(), 1L);
+                SkinManager::updateAllPlayer, 1L);
     }
 
     @EventHandler
