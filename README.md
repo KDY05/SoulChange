@@ -40,9 +40,11 @@
 * /sc help: 도움말을 띄웁니다.
 * /sc reload: config.yml 설정을 불러옵니다.
 * /sc change \[start|stop|run\]: 타이머 시작(start)과 종료(stop), 혹은 즉시 교체(run)를 실행합니다.
+* /sc swap \[player1\] \[player2\]: player1을 player2와 영혼을 맞바꿉니다.
 * /sc skin \[player\]: player로 변장합니다.
 * /sc skin \[player1\] \[player2\]: player1을 player2로 변장시킵니다.
 * /sc resetskin \[player\]: player의 변장을 해제합니다.
+* /sc realname \[player\]: player의 실제 이름을 알아냅니다.
 
 
 ## Config

@@ -12,6 +12,16 @@ import java.util.Random;
 
 public class StatusChanger {
 
+    public static boolean swapStatus(Player origin, Player target) {
+        if (!origin.isOnline() || !target.isOnline()) return false;
+        if (origin.isDead() || target.isDead()) return false;
+        PlayerState originState = PlayerState.saveFrom(origin);
+        PlayerState targetState = PlayerState.saveFrom(target);
+        originState.applyTo(target);
+        targetState.applyTo(origin);
+        return true;
+    }
+
     public static void changeStatus() {
         // 유효 플레이어 리스트 생성
         List<? extends Player> validPlayers = Bukkit.getOnlinePlayers().stream()
