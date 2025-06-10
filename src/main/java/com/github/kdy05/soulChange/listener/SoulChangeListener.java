@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.UUID;
 
+@SuppressWarnings("UnstableApiUsage")
 public class SoulChangeListener implements Listener {
 
     private final SoulChange plugin;

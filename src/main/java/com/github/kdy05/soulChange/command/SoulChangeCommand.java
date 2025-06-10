@@ -1,5 +1,6 @@
 package com.github.kdy05.soulChange.command;
 
+import com.github.kdy05.soulChange.core.NameCacheManager;
 import com.github.kdy05.soulChange.core.StatusChanger;
 import com.github.kdy05.soulChange.SoulChange;
 import com.github.kdy05.soulChange.core.SkinManager;
@@ -21,7 +22,7 @@ import java.util.List;
 public class SoulChangeCommand implements CommandExecutor, TabCompleter {
 
     private PeriodicTask periodicTask;
-    private static final List<String> SUB_COMMANDS = Arrays.asList("help", "reload", "change", "skin", "resetskin");
+    private static final List<String> SUB_COMMANDS = Arrays.asList("help", "reload", "change", "skin", "resetskin", "realname");
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -41,6 +42,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
             case "change" -> handleChange(commandSender, strings);
             case "skin" -> handleSkin(commandSender, strings);
             case "resetskin" -> handleResetSkin(commandSender, strings);
+            case "realname" -> handleRealName(commandSender, strings);
             default -> commandSender.sendMessage(ChatColor.YELLOW + "잘못된 명령입니다.");
         }
 
@@ -142,6 +144,22 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
                 () -> SoulChange.getNameCacheManager().setName(target.getUniqueId(), target.getName()), 1L);
     }
 
+    private void handleRealName(CommandSender commandSender, String[] strings) {
+        if (strings.length != 2) {
+            commandSender.sendMessage(SoulChange.PLUGIN_ID + "잘못된 사용");
+            return;
+        }
+        Player target;
+        if (!Bukkit.matchPlayer(strings[1]).isEmpty()) {
+            target = Bukkit.matchPlayer(strings[1]).getFirst();
+        } else {
+            commandSender.sendMessage(SoulChange.PLUGIN_ID + "닉네임이 유효하지 않습니다.");
+            return;
+        }
+        commandSender.sendMessage(SoulChange.PLUGIN_ID
+                + target.getName() + "의 실제 이름: " + NameCacheManager.getRealName(target.getUniqueId()));
+    }
+
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command,
                                                 @NotNull String s, @NotNull String[] strings) {
@@ -157,6 +175,15 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
             completions.add("start");
             completions.add("stop");
             completions.add("run");
+        }
+        else if (strings.length == 2 && (strings[0].equalsIgnoreCase("skin") || strings[0].equalsIgnoreCase("resetskin")
+                || strings[0].equalsIgnoreCase("realname"))) {
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                completions.add(onlinePlayer.getName());
+            }
+            return completions.stream()
+                    .filter(name -> name.toLowerCase().startsWith(strings[1].toLowerCase()))
+                    .toList();
         }
 
         return completions;
