@@ -11,6 +11,7 @@ import java.util.*;
 public class NameCacheManager {
     private final SoulChange plugin = SoulChange.getPlugin();
     private final Map<UUID, String> nameCache = new HashMap<>();
+    private static final Map<UUID, String> realNameCache = new HashMap<>();
     private final File file;
     private final FileConfiguration config;
 
@@ -67,6 +68,16 @@ public class NameCacheManager {
             }
         }
         return result;
+    }
+
+    // 플레이어의 실제 이름을 캐시에 저장
+    public static void setRealName(UUID uuid, String realName) {
+        realNameCache.put(uuid, realName);
+    }
+
+    // 플레이어의 실제 이름을 가져옴 (변장되지 않은 원래 이름)
+    public static String getRealName(UUID uuid) {
+        return realNameCache.get(uuid);
     }
 
 }

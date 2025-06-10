@@ -3,7 +3,7 @@ package com.github.kdy05.soulChange.listener;
 import com.github.kdy05.soulChange.core.StatusChanger;
 import com.github.kdy05.soulChange.SoulChange;
 import com.github.kdy05.soulChange.core.SkinManager;
-import com.github.kdy05.soulChange.utils.MojangNameFetcher;
+import com.github.kdy05.soulChange.core.NameCacheManager;
 import org.bukkit.Bukkit;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
@@ -41,6 +41,11 @@ public class SoulChangeListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
+        // 플레이어의 실제 이름을 캐시에 저장 (변장되지 않은 상태)
+        Player player = e.getPlayer();
+        NameCacheManager.setRealName(player.getUniqueId(), player.getName());
+        Bukkit.getLogger().info(player.getName());
+        
         // 재접속 시 스킨 유지
         Bukkit.getScheduler().runTaskLater(plugin,
                 SkinManager::updateAllPlayer, 1L);
@@ -86,7 +91,7 @@ public class SoulChangeListener implements Listener {
     private void notifyDamagedPlayer(UUID uuid) {
         if (!plugin.getConfig().getBoolean("notify-damaged-player", false))
             return;
-        String name = MojangNameFetcher.getNameFromUUID(uuid);
+        String name = NameCacheManager.getRealName(uuid);
         if (name != null) {
             Bukkit.broadcastMessage(SoulChange.PLUGIN_ID + "대미지 입은 사람: " + name);
         }

@@ -126,6 +126,10 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleResetSkin(CommandSender commandSender, String[] strings) {
+        if (strings.length != 2) {
+            commandSender.sendMessage(SoulChange.PLUGIN_ID + "잘못된 사용");
+            return;
+        }
         Player target;
         if (!Bukkit.matchPlayer(strings[1]).isEmpty()) {
             target = Bukkit.matchPlayer(strings[1]).getFirst();

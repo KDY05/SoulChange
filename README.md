@@ -37,10 +37,12 @@
 
 ## Commands
 
+* /sc help: 도움말을 띄웁니다.
 * /sc reload: config.yml 설정을 불러옵니다.
 * /sc change \[start|stop|run\]: 타이머 시작(start)과 종료(stop), 혹은 즉시 교체(run)를 실행합니다.
-* /sc skin \[player1|reset\]: player1으로 변장하거나 변장을 해제(reset)합니다.
-* /sc skin \[player1\] \[player2|reset\]: player1을 player2로 변장시키거나 변장을 해제합니다.
+* /sc skin \[player\]: player로 변장합니다.
+* /sc skin \[player1\] \[player2\]: player1을 player2로 변장시킵니다.
+* /sc resetskin \[player\]: player의 변장을 해제합니다.
 
 
 ## Config
@@ -53,6 +55,9 @@ timer:
 
 # 플레이어 피격시 영혼 교체를 실행할 지 결정합니다.
 change-on-damaged: false
+
+# 피격 당한 플레이어를 공지할 지 결정합니다.
+notify-damaged-player: false
 
 # 대미지 공유를 활성화할 지 결정합니다.
 damage-share: false
