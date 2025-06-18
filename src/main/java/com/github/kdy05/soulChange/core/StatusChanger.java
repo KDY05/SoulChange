@@ -52,6 +52,13 @@ public class StatusChanger {
             int targetIndex = targetIndices[i];
             playerStates.get(targetIndex).applyTo(validPlayers.get(i));
         }
+
+        // change-on-damaged가 켜진 경우 일시 무적 적용
+        if (SoulChange.getPlugin().getConfig().getBoolean("change-on-damaged", false)) {
+            for (Player player : validPlayers) {
+                player.setNoDamageTicks(20);
+            }
+        }
     }
 
     private static void sendTitleToPlayers() {
