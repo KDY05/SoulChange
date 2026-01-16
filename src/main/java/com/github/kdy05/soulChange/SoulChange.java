@@ -1,23 +1,19 @@
 package com.github.kdy05.soulChange;
 
 import com.github.kdy05.soulChange.command.SoulChangeCommand;
-import com.github.kdy05.soulChange.core.SkinManager;
 import com.github.kdy05.soulChange.listener.SoulChangeListener;
-import com.github.kdy05.soulChange.core.NameCacheManager;
-import net.pinger.disguise.DisguiseProvider;
-import net.pinger.disguise.DisguiseAPI;
+import net.skinsrestorer.api.SkinsRestorer;
+import net.skinsrestorer.api.SkinsRestorerProvider;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
 public final class SoulChange extends JavaPlugin {
     private static SoulChange plugin;
-    private static NameCacheManager nameCacheManager;
-    private static DisguiseProvider disguiseProvider;
+    private static SkinsRestorer skinsRestorerAPI;
 
-    public static final String PLUGIN_ID = ChatColor.LIGHT_PURPLE + "[SoulChange] " + ChatColor.WHITE;
+    public static final String PLUGIN_ID = "<light_purple>[SoulChange] <white>";
 
     @Override
     public void onEnable() {
@@ -26,22 +22,12 @@ public final class SoulChange extends JavaPlugin {
 
         // static 변수 할당
         plugin = this;
-        nameCacheManager = new NameCacheManager();
-        disguiseProvider = DisguiseAPI.getDefaultProvider();
+        skinsRestorerAPI = SkinsRestorerProvider.get();
 
         // 커맨드, 이벤트 등록
         Bukkit.getServer().getPluginManager().registerEvents(new SoulChangeListener(this), this);
         Objects.requireNonNull(Bukkit.getServer().getPluginCommand("soulchange")).setExecutor(new SoulChangeCommand());
 
-        // DisguiseAPI 의존성 검사
-        if (disguiseProvider == null) {
-            getLogger().info("Failed to find the provider for this version");
-            getLogger().info("Disabling...");
-            this.getPluginLoader().disablePlugin(this);
-            return;
-        }
-
-        SkinManager.updateAllPlayer();
         getLogger().info("Enabling plugin completed.");
     }
 
@@ -55,13 +41,9 @@ public final class SoulChange extends JavaPlugin {
     public static SoulChange getPlugin(){
         return plugin;
     }
-    
-    public static NameCacheManager getNameCacheManager() {
-        return nameCacheManager;
-    }
 
-    public static DisguiseProvider getDisguiseProvider(){
-        return disguiseProvider;
+    public static SkinsRestorer getSkinsRestorerAPI() {
+        return skinsRestorerAPI;
     }
 
 }

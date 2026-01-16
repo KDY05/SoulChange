@@ -31,7 +31,7 @@ public class StatusChanger {
 
         // 2명 미만이면 중지
         if (validPlayers.size() < 2) {
-            Bukkit.getLogger().info("유효 플레이어가 2명 미만입니다.");
+            SoulChange.getPlugin().getLogger().info("유효 플레이어가 2명 미만입니다.");
             return;
         }
 

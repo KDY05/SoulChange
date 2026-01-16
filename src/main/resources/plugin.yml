@@ -1,7 +1,7 @@
 name: SoulChange
 version: ${version}
 main: com.github.kdy05.soulChange.SoulChange
-depend: [DisguiseAPI]
+depend: [ "SkinsRestorer" ]
 api-version: '1.21'
 commands:
   soulchange:

@@ -1,5 +1,6 @@
 package com.github.kdy05.soulChange.core;
 
+import net.skinsrestorer.api.property.SkinIdentifier;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -27,7 +28,7 @@ public class PlayerState {
     private final ArrayList<PotionEffect> potionEffects;
     private final ArrayList<Entity> aggroEntities;
     private final GameMode gameMode;
-    private final String playerName;
+    private final SkinIdentifier skinIdentifier;
 
     private PlayerState(Builder builder) {
         this.health = builder.health;
@@ -45,7 +46,7 @@ public class PlayerState {
         this.potionEffects = builder.potionEffects;
         this.aggroEntities = builder.aggroEntities;
         this.gameMode = builder.gameMode;
-        this.playerName = builder.playerName;
+        this.skinIdentifier = builder.skinIdentifier;
     }
 
     public static PlayerState saveFrom(Player player) {
@@ -65,7 +66,7 @@ public class PlayerState {
                 .potionEffects(saveAndClearPotionEffects(player))
                 .aggroEntities(saveAggroEntities(player))
                 .gameMode(player.getGameMode())
-                .playerName(player.getName())
+                .skinIdentifier(SkinManager.getSkinIdByPlayer(player))
                 .build();
     }
 
@@ -81,20 +82,16 @@ public class PlayerState {
         player.getInventory().setHeldItemSlot(heldItemSlot);
         player.teleport(location);
         player.setRespawnLocation(respawnLocation, true);
-        
         if (vehicle != null) {
             vehicle.addPassenger(player);
         }
-        
         player.addPotionEffects(potionEffects);
-        
         for (Entity entity : aggroEntities) {
             ((Mob) entity).setTarget(null);
             ((Mob) entity).setTarget(player);
         }
-        
         player.setGameMode(gameMode);
-        SkinManager.changeSkin(player, playerName);
+        SkinManager.setSkinById(player, skinIdentifier);
     }
 
     private static ArrayList<PotionEffect> saveAndClearPotionEffects(Player player) {
@@ -133,7 +130,7 @@ public class PlayerState {
         private ArrayList<PotionEffect> potionEffects;
         private ArrayList<Entity> aggroEntities;
         private GameMode gameMode;
-        private String playerName;
+        private SkinIdentifier skinIdentifier;
 
         public Builder health(double health) {
             this.health = health;
@@ -210,8 +207,8 @@ public class PlayerState {
             return this;
         }
 
-        public Builder playerName(String playerName) {
-            this.playerName = playerName;
+        public Builder skinIdentifier(SkinIdentifier skinIdentifier) {
+            this.skinIdentifier = skinIdentifier;
             return this;
         }
 
