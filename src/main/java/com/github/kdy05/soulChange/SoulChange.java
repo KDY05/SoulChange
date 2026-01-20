@@ -17,26 +17,24 @@ public final class SoulChange extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // config 불러오기
         saveDefaultConfig();
 
-        // static 변수 할당
         plugin = this;
         skinsRestorerAPI = SkinsRestorerProvider.get();
 
-        // 커맨드, 이벤트 등록
         Bukkit.getServer().getPluginManager().registerEvents(new SoulChangeListener(this), this);
-        Objects.requireNonNull(Bukkit.getServer().getPluginCommand("soulchange")).setExecutor(new SoulChangeCommand());
+        Objects.requireNonNull(getCommand("soulchange")).setExecutor(new SoulChangeCommand());
+        Objects.requireNonNull(getCommand("soulchange")).setTabCompleter(new SoulChangeCommand());
 
         getLogger().info("Enabling plugin completed.");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("Disabling plugin completed.");
         plugin = null;
+        skinsRestorerAPI = null;
+        getLogger().info("Disabling plugin completed.");
     }
-
 
     public static SoulChange getPlugin(){
         return plugin;

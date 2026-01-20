@@ -1,5 +1,6 @@
-package com.github.kdy05.soulChange.core;
+package com.github.kdy05.soulChange.logic;
 
+import com.github.kdy05.soulChange.utils.SkinManager;
 import net.skinsrestorer.api.property.SkinIdentifier;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

@@ -1,6 +1,6 @@
 package com.github.kdy05.soulChange.command;
 
-import com.github.kdy05.soulChange.core.StatusChanger;
+import com.github.kdy05.soulChange.logic.StatusChanger;
 import com.github.kdy05.soulChange.SoulChange;
 import com.github.kdy05.soulChange.utils.PeriodicTask;
 import net.kyori.adventure.text.Component;

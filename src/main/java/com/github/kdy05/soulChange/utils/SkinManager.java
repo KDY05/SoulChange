@@ -1,4 +1,4 @@
-package com.github.kdy05.soulChange.core;
+package com.github.kdy05.soulChange.utils;
 
 import com.github.kdy05.soulChange.SoulChange;
 import net.skinsrestorer.api.exception.DataRequestException;
@@ -11,29 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-
 public class SkinManager {
-
-    public static void setSkinByName(Player player, String skinName) {
-        SkinStorage skinStorage = SoulChange.getSkinsRestorerAPI().getSkinStorage();
-        PlayerStorage playerStorage = SoulChange.getSkinsRestorerAPI().getPlayerStorage();
-
-        // Find or fetch the skin data
-        try {
-            Optional<InputDataResult> result = skinStorage.findOrCreateSkinData(skinName);
-            if (result.isPresent()) {
-                // Set the skin identifier for the player
-                playerStorage.setSkinIdOfPlayer(
-                        player.getUniqueId(),
-                        result.get().getIdentifier()
-                );
-                // Apply the skin visually
-                SoulChange.getSkinsRestorerAPI().getSkinApplier(Player.class).applySkin(player);
-            }
-        } catch (DataRequestException | MineSkinException e) {
-            SoulChange.getPlugin().getLogger().warning("Failed to fetch skin: " + e.getMessage());
-        }
-    }
 
     public static SkinIdentifier getSkinIdByPlayer(Player player) {
         SkinStorage skinStorage = SoulChange.getSkinsRestorerAPI().getSkinStorage();
@@ -42,6 +20,7 @@ public class SkinManager {
         if (skinIdentifier.isPresent()) {
             return skinIdentifier.get();
         }
+        // storage에 캐시되지 않은 경우 생성하여 반환
         try {
             Optional<InputDataResult> result = skinStorage.findOrCreateSkinData(player.getName());
             if (result.isPresent()) {
@@ -66,6 +45,27 @@ public class SkinManager {
                 SoulChange.getSkinsRestorerAPI().getSkinApplier(Player.class).applySkin(player);
             }
         } catch (DataRequestException e) {
+            SoulChange.getPlugin().getLogger().warning("Failed to fetch skin: " + e.getMessage());
+        }
+    }
+
+    public static void setSkinByName(Player player, String skinName) {
+        SkinStorage skinStorage = SoulChange.getSkinsRestorerAPI().getSkinStorage();
+        PlayerStorage playerStorage = SoulChange.getSkinsRestorerAPI().getPlayerStorage();
+
+        // Find or fetch the skin data
+        try {
+            Optional<InputDataResult> result = skinStorage.findOrCreateSkinData(skinName);
+            if (result.isPresent()) {
+                // Set the skin identifier for the player
+                playerStorage.setSkinIdOfPlayer(
+                        player.getUniqueId(),
+                        result.get().getIdentifier()
+                );
+                // Apply the skin visually
+                SoulChange.getSkinsRestorerAPI().getSkinApplier(Player.class).applySkin(player);
+            }
+        } catch (DataRequestException | MineSkinException e) {
             SoulChange.getPlugin().getLogger().warning("Failed to fetch skin: " + e.getMessage());
         }
     }

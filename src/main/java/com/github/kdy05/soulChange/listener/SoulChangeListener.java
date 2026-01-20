@@ -1,6 +1,6 @@
 package com.github.kdy05.soulChange.listener;
 
-import com.github.kdy05.soulChange.core.StatusChanger;
+import com.github.kdy05.soulChange.logic.StatusChanger;
 import com.github.kdy05.soulChange.SoulChange;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-
 
 public class SoulChangeListener implements Listener {
 

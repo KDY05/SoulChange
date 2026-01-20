@@ -1,8 +1,11 @@
-package com.github.kdy05.soulChange.core;
+package com.github.kdy05.soulChange.logic;
 
 import com.github.kdy05.soulChange.SoulChange;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -56,7 +59,7 @@ public class StatusChanger {
         // change-on-damaged가 켜진 경우 일시 무적 적용
         if (SoulChange.getPlugin().getConfig().getBoolean("change-on-damaged", false)) {
             for (Player player : validPlayers) {
-                player.setNoDamageTicks(20);
+                player.setNoDamageTicks(40);
             }
         }
     }
@@ -70,9 +73,12 @@ public class StatusChanger {
         for (Player player : Bukkit.getOnlinePlayers()) {
             switch (option) {
                 case "TITLE" -> Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
-                        () -> player.sendTitle("", ChatColor.GRAY + "모든 플레이어들의 영혼이 뒤바뀌었습니다!", 5, 50, 5), 5L);
+                        () -> player.showTitle(Title.title(Component.text(""), Component.text(
+                                "모든 플레이어들의 영혼이 뒤바뀌었습니다!", NamedTextColor.GRAY),
+                                5, 50, 5)), 5L);
                 case "CHAT" -> Bukkit.getScheduler().runTaskLater(SoulChange.getPlugin(),
-                        () -> player.sendMessage(SoulChange.PLUGIN_ID + "모든 플레이어들의 영혼이 뒤바뀌었습니다!"), 5L);
+                        () -> player.sendMessage(MiniMessage.miniMessage().deserialize(SoulChange.PLUGIN_ID
+                                + "모든 플레이어들의 영혼이 뒤바뀌었습니다!")), 5L);
             }
         }
     }
