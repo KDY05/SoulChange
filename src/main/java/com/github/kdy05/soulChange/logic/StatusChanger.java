@@ -57,7 +57,7 @@ public class StatusChanger {
         }
 
         // change-on-damaged가 켜진 경우 일시 무적 적용
-        if (SoulChange.getPlugin().getConfig().getBoolean("change-on-damaged", false)) {
+        if (SoulChange.getPlugin().getConfig().getBoolean("change-on-damaged.enabled", false)) {
             for (Player player : validPlayers) {
                 player.setNoDamageTicks(40);
             }

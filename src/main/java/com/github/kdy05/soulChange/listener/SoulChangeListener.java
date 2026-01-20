@@ -24,10 +24,10 @@ public class SoulChangeListener implements Listener {
     public void onPlayerDamaged(EntityDamageEvent e){
         if (e.getEntityType() != EntityType.PLAYER) return;
 
-        if (plugin.getConfig().getBoolean("damage-share", false))
+        if (plugin.getConfig().getBoolean("damage-share.enabled", false))
             shareDamage(e);
 
-        if (plugin.getConfig().getBoolean("change-on-damaged", false)){
+        if (plugin.getConfig().getBoolean("change-on-damaged.enabled", false)){
             Player player = (Player) e.getEntity();
             if (player.getHealth() <= e.getFinalDamage()) return; // 죽을 예정이면 실행하지 않음
             if (e.getFinalDamage() == 0) return; // 방패 예외 처리
@@ -46,7 +46,7 @@ public class SoulChangeListener implements Listener {
             return;
 
         Player origin = (Player) e.getEntity();
-        double rate = plugin.getConfig().getDouble("damage-share-rate", 1.0);
+        double rate = plugin.getConfig().getDouble("damage-share.rate", 1.0);
         double damage = e.getDamage() * rate;
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player == origin) {
@@ -58,7 +58,7 @@ public class SoulChangeListener implements Listener {
     }
 
     private void notifyDamagedPlayer(Player player) {
-        if (!plugin.getConfig().getBoolean("notify-damaged-player", false))
+        if (!plugin.getConfig().getBoolean("change-on-damaged.notify-damagee", false))
             return;
         if (player != null) {
             Bukkit.broadcast(MiniMessage.miniMessage().deserialize(
