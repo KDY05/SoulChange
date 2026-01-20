@@ -72,7 +72,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
         switch (strings[1]) {
             case "start" -> {
                 if (periodicTask != null) {
-                    sendMessageAsComponent(sender, "이미 타이머가 실행 중입니다. 종료 후 다시 실행해주세요.");
+                    sendMessageAsComponent(sender, "<red>이미 타이머가 실행 중입니다. 종료 후 다시 실행해주세요.");
                     return;
                 }
                 periodicTask = new PeriodicTask(SoulChange.getPlugin(), StatusChanger::changeStatus);
@@ -81,7 +81,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
             }
             case "stop" -> {
                 if (periodicTask == null) {
-                    sendMessageAsComponent(sender, "실행 중인 타이머가 없습니다.");
+                    sendMessageAsComponent(sender, "<red>실행 중인 타이머가 없습니다.");
                     return;
                 }
                 periodicTask.stop();
@@ -103,7 +103,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
         Player target = getPlayerByName(args[2]);
 
         if (origin == null || target == null) {
-            sendMessageAsComponent(sender, "닉네임이 유효하지 않습니다.");
+            sendMessageAsComponent(sender, "<red>닉네임이 유효하지 않습니다.");
             return;
         }
 
@@ -111,7 +111,7 @@ public class SoulChangeCommand implements CommandExecutor, TabCompleter {
             sendMessageAsComponent(sender, "두 플레이어의 영혼을 교체했습니다: " +
                     origin.getName() + " ↔ " + target.getName());
         } else {
-            sendMessageAsComponent(sender, "플레이어가 영혼을 교체할 수 없는 상태입니다.");
+            sendMessageAsComponent(sender, "<yellow>플레이어가 영혼을 교체할 수 없는 상태입니다.");
         }
     }
 

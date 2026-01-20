@@ -50,6 +50,8 @@ change-on-damaged:
   enabled: false
   # 피격 당한 플레이어를 공지할 지 결정합니다.
   notify-damagee: false
+  # 활성화 시 피격 당한 플레이어를 포함한 무작위 2명의 영혼을 교환합니다.
+  swap-mode: false
 
 damage-share:
   # 대미지 공유를 활성화할 지 결정합니다.
